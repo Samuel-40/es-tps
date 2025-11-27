@@ -19,27 +19,27 @@
   <input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
 
   Mezzi posseduti:<br>
-  <input type="checkbox" id="auto" value="Auto"> Auto
-  <input type="checkbox" id="moto" value="Moto"> Moto
-  <input type="checkbox" id="bici" value="Bici"> Bici
-  <input type="checkbox" id="cavallo" value="Cavallo"> Cavallo
-  <input type="checkbox" id="deltaplano" value="Deltaplano"> Deltaplano<br><br>
+  <input type="checkbox" id="autobus" value="Autobus"> Autobus
+  <input type="checkbox" id="bicicletta" value="bicicletta"> bicicletta
+  <input type="checkbox" id="aereo" value="aereo"> aereo
+  <input type="checkbox" id="elicottero" value="elicottero"> elicottero
+  <input type="checkbox" id="moto" value="moto"> moto<br><br>
 
   Provincia:
   <select id="provincia">
     <option value="MI">Milano</option>
-    <option value="VA">Varese</option>
     <option value="NA">Napoli</option>
+    <option value="VA">Varese</option>
+    <option value="FE">Firenze</option>
     <option value="TO">Torino</option>
-    <option value="FI">Firenze</option>
   </select><br><br>
 
   Materie preferite (CTRL+click per più scelte):<br>
   <select id="materie" multiple size="5">
-    <option value="Italiano">Italiano</option>
-    <option value="Storia">Storia</option>
     <option value="Matematica">Matematica</option>
-    <option value="TPSIT">TPS</option>
+    <option value="TPS">TPS</option>
+    <option value="Storia">Storia</option>
+    <option value="Italiano">Italiano</option>
     <option value="Inglese">Inglese</option>
   </select><br><br>
 
@@ -79,11 +79,11 @@
       else sesso = "Non selezionato";
 
       let mezzi = "";
-      if (document.getElementById("auto").checked) mezzi += "Auto ";
-      if (document.getElementById("moto").checked) mezzi += "Moto ";
-      if (document.getElementById("bici").checked) mezzi += "Bici ";
-      if (document.getElementById("cavallo").checked) mezzi += "Cavallo ";
-      if (document.getElementById("deltaplano").checked) mezzi += "Deltaplano ";
+      if (document.getElementById("autobus").checked) mezzi += "Autobus ";
+      if (document.getElementById("bicicletta").checked) mezzi += "bicicletta ";
+      if (document.getElementById("aereo").checked) mezzi += "aereo ";
+      if (document.getElementById("elicottero").checked) mezzi += "elicottero ";
+      if (document.getElementById("moto").checked) mezzi += "moto ";
 
       let provincia = document.getElementById("provincia").value;
 
