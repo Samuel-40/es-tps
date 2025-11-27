@@ -1,0 +1,112 @@
+!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica 3.0</title>
+</head>
+<body>
+  <h2>Anagrafica Utente</h2>
+
+  Nome: <input type="text" id="nome"><br><br>
+  Cognome: <input type="text" id="cognome"><br><br>
+  Città: <input type="text" id="citta"><br><br>
+  CAP: <input type="text" id="cap"><br><br>
+  Data di nascita: <input type="date" id="dataNascita"><br><br>
+
+  Sesso:<br>
+  <input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
+  <input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
+  <input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
+
+  Mezzi posseduti:<br>
+  <input type="checkbox" id="auto" value="Autobus"> Autobus
+  <input type="checkbox" id="moto" value="bicicletta"> bicicletta
+  <input type="checkbox" id="bici" value="macchina"> macchina
+  <input type="checkbox" id="cavallo" value="aereo"> aereo
+  <input type="checkbox" id="deltaplano" value="elicottero"> elicottero<br><br>
+
+  Provincia:
+  <select id="provincia">
+    <option value="MI">Milano</option>
+    <option value="VA">Varese</option>
+    <option value="NA">Napoli</option>
+    <option value="TO">firenze</option>
+    <option value="FI">torino</option>
+  </select><br><br>
+
+  Materie preferite (CTRL+click per più scelte):<br>
+  <select id="materie" multiple size="5">
+    <option value="Italiano">Italiano</option>
+    <option value="Storia">Storia</option>
+    <option value="Matematica">tps</option>
+    <option value="TPSIT">matematica</option>
+    <option value="Inglese">Inglese</option>
+  </select><br><br>
+
+  <button onclick="mostraRisultato()">Invia</button>
+
+  <h3>Risultato:</h3>
+  <div id="risultato"></div>
+
+  <script>
+    function getGenerazione(anno) {
+      if (anno >= 2013) return "Generazione Alpha";
+      else if (anno >= 1997) return "Generazione Z";
+      else if (anno >= 1981) return "Millennials";
+      else if (anno >= 1965) return "Generazione X";
+      else if (anno >= 1946) return "Baby Boomers";
+      else if (anno >= 1928) return "Generazione Silenziosa";
+      else if (anno >= 1901) return "Greatest Generation";
+      else return "Generazione non definita";
+    }
+
+    function mostraRisultato() {
+      let nome = document.getElementById("nome").value;
+      let cognome = document.getElementById("cognome").value;
+      let citta = document.getElementById("citta").value;
+      let cap = document.getElementById("cap").value;
+      let dataNascita = document.getElementById("dataNascita").value;
+
+      let anno = new Date(dataNascita).getFullYear();
+      let oggi = new Date().getFullYear();
+      let eta = oggi - anno;
+      let generazione = getGenerazione(anno);
+
+      let sesso = "";
+      if (document.getElementById("sessoM").checked) sesso = "Maschio";
+      else if (document.getElementById("sessoF").checked) sesso = "Femmina";
+      else if (document.getElementById("sessoAltro").checked) sesso = "Altro";
+      else sesso = "Non selezionato";
+
+      let mezzi = "";
+      if (document.getElementById("autobus").checked) mezzi += "autobus ";
+      if (document.getElementById("bicicletta").checked) mezzi += "bicicletta ";
+      if (document.getElementById("macchina").checked) mezzi += "macchina ";
+      if (document.getElementById("aereo").checked) mezzi += "aereo ";
+      if (document.getElementById("elicottero").checked) mezzi += "elicottero ";
+
+      let provincia = document.getElementById("provincia").value;
+
+      let materieSelezionate = "";
+      let materie = document.getElementById("materie");
+      for (let i = 0; i < materie.options.length; i++) {
+        if (materie.options[i].selected) {
+          materieSelezionate += materie.options[i].value + " ";
+        }
+      }
+
+      document.getElementById("risultato").innerHTML =
+        "Nome: " + nome + "<br>" +
+        "Cognome: " + cognome + "<br>" +
+        "Città: " + citta + "<br>" +
+        "CAP: " + cap + "<br>" +
+        "Età: " + eta + " anni<br>" +
+        "Generazione: " + generazione + "<br>" +
+        "Sesso: " + sesso + "<br>" +
+        "Mezzi: " + mezzi + "<br>" +
+        "Provincia: " + provincia + "<br>" +
+        "Materie preferite: " + materieSelezionate;
+    }
+  </script>
+</body>
+</html>
