@@ -5,29 +5,29 @@
 </head>
 <body>
 
-<canvas id="canvas" width="700" height="300"></canvas>
+<canvas id="canvas" width="550" height="350"></canvas>
 
 <script>
     let canvas = document.getElementById("canvas");
     let disegno = canvas.getContext("2d");
 
    
-    disegno.fillStyle = "lightblue";
-    disegno.fillRect(0, 0, 700, 300);
+    disegno.fillStyle = "yellow";
+    disegno.fillRect(0, 0, 550, 250);
 
     
     disegno.beginPath();
-    disegno.arc(250, 150, 120, 0, Math.PI * 2);
+    disegno.arc(250, 150, 70, 0, Math.PI * 2);
     disegno.fillStyle = "black";
     disegno.fill();
     disegno.stroke();
 
     disegno.beginPath();
-    disegno.moveTo(350, 90);
-    disegno.lineTo(390, 210);
-    disegno.lineTo(270, 130);
-    disegno.lineTo(430, 130);
-    disegno.lineTo(310, 210);
+    disegno.moveTo(150, 60);
+    disegno.lineTo(290, 200);
+    disegno.lineTo(170, 110);
+    disegno.lineTo(330, 110);
+    disegno.lineTo(210, 200);
     disegno.closePath();
 
     disegno.fillStyle = "red";
