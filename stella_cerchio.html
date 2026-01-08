@@ -5,7 +5,7 @@
 </head>
 <body>
 
-<canvas id="canvas" width="700" height="300"></canvas>
+<canvas id="canvas" width="700" height="500"></canvas>
 
 <script>
     let canvas = document.getElementById("canvas");
@@ -13,21 +13,21 @@
 
    
     disegno.fillStyle = "yellow";
-    disegno.fillRect(0, 0, 700, 300);
+    disegno.fillRect(0, 0, 700, 500);
 
     
     disegno.beginPath();
-    disegno.arc(250, 150, 70, 0, Math.PI * 2);
+    disegno.arc(400, 300, 220, 0, Math.PI * 2);
     disegno.fillStyle = "black";
     disegno.fill();
     disegno.stroke();
 
     disegno.beginPath();
-    disegno.moveTo(250, 90);
-    disegno.lineTo(290, 190);
-    disegno.lineTo(200, 130);
-    disegno.lineTo(300, 130);
-    disegno.lineTo(210, 190);
+    disegno.moveTo(400, 210);
+    disegno.lineTo(440, 350);
+    disegno.lineTo(320, 270);
+    disegno.lineTo(480, 260);
+    disegno.lineTo(360, 350);
     disegno.closePath();
 
     disegno.fillStyle = "red";
