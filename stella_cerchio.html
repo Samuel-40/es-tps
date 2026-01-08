@@ -1,0 +1,39 @@
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <title>Stella nel cerchio</title>
+</head>
+<body>
+
+<canvas id="canvas" width="700" height="300"></canvas>
+
+<script>
+    let canvas = document.getElementById("canvas");
+    let disegno = canvas.getContext("2d");
+
+   
+    disegno.fillStyle = "lightblue";
+    disegno.fillRect(0, 0, 700, 300);
+
+    
+    disegno.beginPath();
+    disegno.arc(250, 150, 120, 0, Math.PI * 2);
+    disegno.fillStyle = "black";
+    disegno.fill();
+    disegno.stroke();
+
+    disegno.beginPath();
+    disegno.moveTo(300, 110);
+    disegno.lineTo(340, 250);
+    disegno.lineTo(220, 160);
+    disegno.lineTo(380, 160);
+    disegno.lineTo(260, 250);
+    disegno.closePath();
+
+    disegno.fillStyle = "red";
+    disegno.fill();
+    disegno.stroke();
+</script>
+
+</body>
+</html>
