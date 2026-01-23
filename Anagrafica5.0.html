@@ -2,46 +2,134 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Anagrafica 5.0</title>
+<title>Anagrafica Utente</title>
 </head>
 <body>
-<h2>Anagrafica Utente</h2>
-Nome: <input type="text" id="nome"><br><br>
-Cognome: <input type="text" id="cognome"><br><br>
-Città: <input type="text" id="citta"><br><br>
-CAP: <input type="text" id="cap"><br><br>
-Data di nascita: <input type="date" id="dataNascita"><br><br>
+  <h2>Inserisci Anagrafica Utente</h2>
+  <form id="anagraficaForm">
+    <label>Nome:
+      <input type="text" id="nome" required>
+    </label>
 
-Sesso:<br>
-<input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
-<input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
-<input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
+    <label>Cognome:
+      <input type="text" id="cognome" required>
+    </label>
+    <label>sesso:</label><br>
+        <input type="radio" name="sesso" value="maschio">
+  <label for="rosso">maschio</label><br>
+        <input type="radio" name="sesso" value="femmina">
+  <label for="verde">femmina</label><br>
+        <input type="radio" name="sesso" value="altro">
+  <label for="blu">altro</label><br>
+    <label>Indirizzo:
+      <input type="text" id="indirizzo" required>
+    </label>
+<input type="checkbox" id="box1" name="auto" value="auto" onclick="onClickHandler(document.getElementById('box1').value)">
+<label for="vehicle1"> ho un auto</label>
+<input type="checkbox" id="box2" name="bici" value="bici" onclick="onClickHandler(document.getElementById('box2').value)">
+<label for="vehicle2"> ho una bici</label>
+<input type="checkbox" id="box3" name="cavallo" value="cavallo" onclick="onClickHandler(document.getElementById('box3').value)">
+<label for="vehicle3"> ho un cavallo</label>
+<select name="provincia">
+    <option value="milano">milano</option>
+    <option value="torino">torino</option>
+    <option value="napoli">napoli</option>
+    
+</select>
+<select name="materie_preferite" id="materie" multiple>
+        <option value="matematica">Matematica</option>
+        <option value="inglese">inglese</option>
+        <option value="storia">Storia</option>
+    </select>
+    <label>Città:
+      <input type="text" id="citta" required>
+    </label>
 
-Mezzi posseduti:<br>
-<input type="checkbox" id="auto" value="Auto"> Auto
-<input type="checkbox" id="bici" value="bici"> bici
-<input type="checkbox" id="cavallo" value="cavallo"> cavallo
-<br><br>
+    <label>CAP:
+      <input type="text" id="cap" required>
+    </label>
 
-Provincia:
-<select id="provincia">
-<option value="MI">Milano</option>
-<option value="TO">torino</option>
-<option value="NA">Napoli</option>
-</select><br><br>
+    <label>Data di nascita:
+      <input type="date" id="dataNascita" required>
+    </label>
+<!-- richiamo funzione calcolaGenerazione-->
+    <button type="button" onclick="calcolaGenerazione()">Invia</button>
+  </form>
 
-Materie preferite (CTRL+click per più scelte):<br>
-<select id="materie" multiple size="5">
-<option value="Italiano">Italiano</option>
-<option value="Storia">Storia</option>
-<option value="Matematica">Matematica</option>
-<option value="TPSIT">TPS</option>
-<option value="Inglese">Inglese</option>
-</select><br><br>
+  <div class="output" id="risultato"></div>
 
-<button onclick="mostraRisultato()">Invia</button>
-<br><br>
-<a href="stampaAnagrafica.html">Stampa</a>
+  <script>
+    function calcolaGenerazione() {
+      nome = document.getElementById('nome').value;
+      cognome = document.getElementById('cognome').value;
+      indirizzo = document.getElementById('indirizzo').value;
+      citta = document.getElementById('citta').value;
+      cap = document.getElementById('cap').value;
+      dataNascita = document.getElementById('dataNascita').value;
+      sesso = document.querySelector('input[name="sesso"]:checked');
+      sessosel=sesso.value;
+      mezzo = document.querySelectorAll('input[type="checkbox"]:checked');
+      let mezziSelezionati = [];
+      mezzo.forEach(checkbox => {
+      mezziSelezionati.push(checkbox.value);
+      });
+      let outputMezzi = mezziSelezionati.join();
+      provincia=document.querySelector('select[name="provincia"]').value;
+             
+annoNascita = new Date(dataNascita).getFullYear(); 
+      eta = new Date().getFullYear() - annoNascita; 
+
+      generazione = '';
+      
+      switch(true){
+        case annoNascita >= 2013:
+          generazione = 'Generazione Alpha';
+          break;
+        case annoNascita >= 1997:
+          generazione = 'Generazione Z';
+          break;
+        case annoNascita >= 1981:
+          generazione = 'Millennials';
+          break;
+        case annoNascita >= 1965:
+          generazione = 'Generazione X';
+          break;
+        case annoNascita >= 1946:
+          generazione = 'Baby Boomers';
+          break;
+        case annoNascita >= 1928:
+          generazione = 'Generazione Silenziosa';
+          break;
+
+        case annoNascita >= 1908:
+          generazione = 'Greatest Generation';
+          break;
+        default:
+          generazione = 'Pre-1908 (non classificata)';
+        break
+      }
+
+      document.getElementById('outnome').innerHTML= nome;
+      document.getElementById('outcognome').innerHTML= cognome;
+      document.getElementById('outindirizzo').innerHTML= indirizzo;
+      document.getElementById('outcitta').innerHTML= citta;
+      document.getElementById('outcap').innerHTML= cap;
+      document.getElementById('outdatanascita').innerHTML= dataNascita;
+      document.getElementById('outsesso').innerHTML= sessosel;
+      document.getElementById('outprovincia').innerHTML=provincia;
+      document.getElementById('outmezzi').innerHTML=outputMezzi;
+    }
+  </script>
+  <div id="outnome"></div>
+  <div id="outcognome"></div>
+  <div id="outindirizzo"></div>
+  <div id="outcitta"></div>
+  <div id="outcap"></div>
+  <div id="outdatanascita"></div>
+  <div id="outsesso"></div>
+  <div id="outmezzi"></div>
+    <div id="outprovincia"></div>
+<a href="anagrafica5.html">Stampa</a>
 
 <script>
 let ele = JSON.parse(localStorage.getItem("elenco")) || [];
