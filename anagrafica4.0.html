@@ -7,7 +7,6 @@
 </head>
 <body>
   <h2>Inserisci Anagrafica Utente</h2>
-<!--inserire input -->
   <form id="anagraficaForm">
     <label>Nome:
       <input type="text" id="nome" required>
@@ -54,7 +53,7 @@
     <label>Data di nascita:
       <input type="date" id="dataNascita" required>
     </label>
-<!-- richiamo funzione calcolaGenerazione-->
+
     <button type="button" onclick="calcolaGenerazione()">Invia</button>
   </form>
 
@@ -62,7 +61,6 @@
 
   <script>
     function calcolaGenerazione() {
-    // get valore input e altre variabili
       nome = document.getElementById('nome').value;
       cognome = document.getElementById('cognome').value;
       indirizzo = document.getElementById('indirizzo').value;
@@ -84,11 +82,11 @@
 
 
 
-annoNascita = new Date(dataNascita).getFullYear(); //estrae anno da dataNascita per fare calcoli per generazione
-      eta = new Date().getFullYear() - annoNascita; //cacolo eta sottraendo l anno corrente con anno di nascita
+annoNascita = new Date(dataNascita).getFullYear(); 
+      eta = new Date().getFullYear() - annoNascita; 
 
       generazione = '';
-      //utilizzo switch per calcolare generazione mettere true simulare condizione cpm operazioni <>
+      
       switch(true){
         case annoNascita >= 2013:
           generazione = 'Generazione Alpha';
