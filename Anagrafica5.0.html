@@ -1,110 +1,110 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-    <meta charset="UTF-8">
-    <title>Gestione Utenti</title>
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            border-collapse: collapse;
-            padding: 5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Anagrafica 5.0</title>
 </head>
 <body>
-
-<h2>Inserisci dati utente</h2>
-
+<h2>Anagrafica Utente</h2>
 Nome: <input type="text" id="nome"><br><br>
 Cognome: <input type="text" id="cognome"><br><br>
-Età: <input type="number" id="eta"><br><br>
+Città: <input type="text" id="citta"><br><br>
+CAP: <input type="text" id="cap"><br><br>
+Data di nascita: <input type="date" id="dataNascita"><br><br>
 
-<button onclick="inserisci()">Salva</button>
+Sesso:<br>
+<input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
+<input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
+<input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
 
-<h2>Dati salvati</h2>
+Mezzi posseduti:<br>
+<input type="checkbox" id="auto" value="Auto"> Auto
+<input type="checkbox" id="moto" value="Moto"> Moto
+<input type="checkbox" id="bici" value="Bici"> Bici
+<input type="checkbox" id="cavallo" value="Cavallo"> Cavallo
+<input type="checkbox" id="deltaplano" value="Deltaplano"> Deltaplano<br><br>
 
-<table id="tabella">
-    <tr>
-        <th>Nome</th>
-        <th>Cognome</th>
-        <th>Età</th>
-    </tr>
-</table>
+Provincia:
+<select id="provincia">
+<option value="MI">Milano</option>
+<option value="VA">Varese</option>
+<option value="NA">Napoli</option>
+<option value="TO">Torino</option>
+<option value="FI">Firenze</option>
+</select><br><br>
+
+Materie preferite (CTRL+click per più scelte):<br>
+<select id="materie" multiple size="5">
+<option value="Italiano">Italiano</option>
+<option value="Storia">Storia</option>
+<option value="Matematica">Matematica</option>
+<option value="TPSIT">TPS</option>
+<option value="Inglese">Inglese</option>
+</select><br><br>
+
+<button onclick="mostraRisultato()">Invia</button>
+<br><br>
+<a href="stampaAnagrafica.html">Stampa</a>
 
 <script>
-    // array globale
-    let ele = [];
+let ele = JSON.parse(localStorage.getItem("elenco")) || [];
 
-    // se ci sono già dati nel localStorage li carico
-    if(localStorage.getItem("elenco") != null){
-        ele = JSON.parse(localStorage.getItem("elenco"));
-        aggiornaTabella();
-    }
+function getGenerazione(anno) {
+if (anno >= 2013) return "Generazione Alpha";
+else if (anno >= 1997) return "Generazione Z";
+else if (anno >= 1981) return "Millennials";
+else if (anno >= 1965) return "Generazione X";
+else if (anno >= 1946) return "Baby Boomers";
+else if (anno >= 1928) return "Generazione Silenziosa";
+else if (anno >= 1901) return "Greatest Generation";
+else return "Generazione non definita";
+}
 
-    function inserisci(){
-        let n = document.getElementById("nome").value;
-        let c = document.getElementById("cognome").value;
-        let e = document.getElementById("eta").value;
+function mostraRisultato() {
+let persona = {
+nome: document.getElementById("nome").value,
+cognome: document.getElementById("cognome").value,
+citta: document.getElementById("citta").value,
+cap: document.getElementById("cap").value,
+dataNascita: document.getElementById("dataNascita").value,
 
-        if(n=="" || c=="" || e==""){
-            alert("Compila tutti i campi!");
-            return;
-        }
+sesso: (function(){
+if (document.getElementById("sessoM").checked) return "Maschio";
+if (document.getElementById("sessoF").checked) return "Femmina";
+if (document.getElementById("sessoAltro").checked) return "Altro";
+return "N/D";
+})(),
 
-        // creo oggetto persona
-        const persona = {
-            nome: n,
-            cognome: c,
-            eta: e
-        };
+mezzi: (function(){
+let m = [];
+if (document.getElementById("auto").checked) m.push("Auto");
+if (document.getElementById("moto").checked) m.push("Moto");
+if (document.getElementById("bici").checked) m.push("Bici");
+if (document.getElementById("cavallo").checked) m.push("Cavallo");
+if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
+return m;
+})(),
 
-        // aggiungo a collection
-        ele.push(persona);
+provincia: document.getElementById("provincia").value,
 
-        // salvo su localStorage
-        localStorage.setItem("elenco", JSON.stringify(ele));
+materie: (function(){
+let lista = [];
+let opzioni = document.getElementById("materie").options;
+for (let i = 0; i < opzioni.length; i++) {
+if (opzioni[i].selected) lista.push(opzioni[i].value);
+}
+return lista;
+})()
+};
 
-        // aggiorno la tabella
-        aggiornaTabella();
+let anno = new Date(persona.dataNascita).getFullYear();
+let oggi = new Date().getFullYear();
+persona.eta = oggi - anno;
+persona.generazione = getGenerazione(anno);
 
-        // svuoto input
-        document.getElementById("nome").value = "";
-        document.getElementById("cognome").value = "";
-        document.getElementById("eta").value = "";
-    }
-
-    function aggiornaTabella(){
-        let tab = document.getElementById("tabella");
-
-        // cancello tutte le righe tranne l'intestazione
-        tab.innerHTML = `
-        <tr>
-            <th>Nome</th>
-            <th>Cognome</th>
-            <th>Età</th>
-        </tr>`;
-
-        // creo le righe con i dati
-        for(let i=0; i<ele.length; i++){
-            let tr = document.createElement("tr");
-
-            let tdNome = document.createElement("td");
-            tdNome.textContent = ele[i].nome;
-
-            let tdCognome = document.createElement("td");
-            tdCognome.textContent = ele[i].cognome;
-
-            let tdEta = document.createElement("td");
-            tdEta.textContent = ele[i].eta;
-
-            tr.appendChild(tdNome);
-            tr.appendChild(tdCognome);
-            tr.appendChild(tdEta);
-
-            tab.appendChild(tr);
-        }
-    }
+ele.push(persona);
+localStorage.setItem("elenco", JSON.stringify(ele));
+}
 </script>
-
 </body>
 </html>
