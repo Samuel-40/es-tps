@@ -17,21 +17,22 @@ let co = document.getElementById("cont");
 let s = JSON.parse(localStorage.getItem("elenco"));
 
 if (s && s.length > 0) {
-  s.forEach((p, i) => {
+  for (let i = 0; i < s.length; i++) {
     let par = document.createElement("p");
     par.textContent = (i+1) + ") " +
-      p.nome + " " + p.cognome + " | " +
-      "Città: " + p.citta + " (" + p.provincia + "), CAP: " + p.cap + " | " +
-      "Nato il: " + p.dataNascita + " (Età: " + p.eta + ", " + p.generazione + ") | " +
-      "Sesso: " + p.sesso + " | " +
-      "Mezzi: " + (p.mezzi.length > 0 ? p.mezzi.join(", ") : "Nessuno") + " | " +
-      "Materie: " + (p.materie.length > 0 ? p.materie.join(", ") : "Nessuna");
+      s[i].nome + " " + s[i].cognome + " | " +
+      "Città: " + s[i].citta + " (" + s[i].provincia + "), CAP: " + s[i].cap + " | " +
+      "Nato il: " + s[i].dataNascita + " (Età: " + s[i].eta + ", " + s[i].generazione + ") | " +
+      "Sesso: " + s[i].sesso + " | " +
+      "Mezzi: " + (s[i].mezzi.length > 0 ? s[i].mezzi.join(", ") : "Nessuno") + " | " +
+      "Materie: " + (s[i].materie.length > 0 ? s[i].materie.join(", ") : "Nessuna");
     co.appendChild(par);
-  });
+  }
 } else {
   co.innerHTML = "<p>L'elenco è vuoto.</p>";
 }
 </script>
 </body>
 </html>
+
 
