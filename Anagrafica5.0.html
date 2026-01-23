@@ -52,86 +52,13 @@
     <label>Data di nascita:
       <input type="date" id="dataNascita" required>
     </label>
-<!-- richiamo funzione calcolaGenerazione-->
+
     <button type="button" onclick="calcolaGenerazione()">Invia</button>
   </form>
 
   <div class="output" id="risultato"></div>
 
   <script>
-    function calcolaGenerazione() {
-      nome = document.getElementById('nome').value;
-      cognome = document.getElementById('cognome').value;
-      indirizzo = document.getElementById('indirizzo').value;
-      citta = document.getElementById('citta').value;
-      cap = document.getElementById('cap').value;
-      dataNascita = document.getElementById('dataNascita').value;
-      sesso = document.querySelector('input[name="sesso"]:checked');
-      sessosel=sesso.value;
-      mezzo = document.querySelectorAll('input[type="checkbox"]:checked');
-      let mezziSelezionati = [];
-      mezzo.forEach(checkbox => {
-      mezziSelezionati.push(checkbox.value);
-      });
-      let outputMezzi = mezziSelezionati.join();
-      provincia=document.querySelector('select[name="provincia"]').value;
-             
-annoNascita = new Date(dataNascita).getFullYear(); 
-      eta = new Date().getFullYear() - annoNascita; 
-
-      generazione = '';
-      
-      switch(true){
-        case annoNascita >= 2013:
-          generazione = 'Generazione Alpha';
-          break;
-        case annoNascita >= 1997:
-          generazione = 'Generazione Z';
-          break;
-        case annoNascita >= 1981:
-          generazione = 'Millennials';
-          break;
-        case annoNascita >= 1965:
-          generazione = 'Generazione X';
-          break;
-        case annoNascita >= 1946:
-          generazione = 'Baby Boomers';
-          break;
-        case annoNascita >= 1928:
-          generazione = 'Generazione Silenziosa';
-          break;
-
-        case annoNascita >= 1908:
-          generazione = 'Greatest Generation';
-          break;
-        default:
-          generazione = 'Pre-1908 (non classificata)';
-        break
-      }
-
-      document.getElementById('outnome').innerHTML= nome;
-      document.getElementById('outcognome').innerHTML= cognome;
-      document.getElementById('outindirizzo').innerHTML= indirizzo;
-      document.getElementById('outcitta').innerHTML= citta;
-      document.getElementById('outcap').innerHTML= cap;
-      document.getElementById('outdatanascita').innerHTML= dataNascita;
-      document.getElementById('outsesso').innerHTML= sessosel;
-      document.getElementById('outprovincia').innerHTML=provincia;
-      document.getElementById('outmezzi').innerHTML=outputMezzi;
-    }
-  </script>
-  <div id="outnome"></div>
-  <div id="outcognome"></div>
-  <div id="outindirizzo"></div>
-  <div id="outcitta"></div>
-  <div id="outcap"></div>
-  <div id="outdatanascita"></div>
-  <div id="outsesso"></div>
-  <div id="outmezzi"></div>
-    <div id="outprovincia"></div>
-<a href="anagrafica5.html">Stampa</a>
-
-<script>
 let ele = JSON.parse(localStorage.getItem("elenco")) || [];
 
 function getGenerazione(anno) {
@@ -179,8 +106,7 @@ for (let i = 0; i < opzioni.length; i++) {
 if (opzioni[i].selected) lista.push(opzioni[i].value);
 }
 return lista;
-}
-         )()
+})()
 };
 
 let anno = new Date(persona.dataNascita).getFullYear();
