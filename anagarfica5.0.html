@@ -17,13 +17,13 @@
     <input type="text" id="cognome" required>
   </label>
 
-  <label>sesso:</label><br>
+  <label>sesso:</label>
   <input type="radio" name="sesso" value="maschio">
-  <label>maschio</label><br>
+  <label>maschio</label>
   <input type="radio" name="sesso" value="femmina">
-  <label>femmina</label><br>
+  <label>femmina</label>
   <input type="radio" name="sesso" value="altro">
-  <label>altro</label><br>
+  <label>altro</label>
 
   <label>Indirizzo:
     <input type="text" id="indirizzo" required>
@@ -100,7 +100,6 @@ function calcolaGenerazione() {
 
   let anagrafica = JSON.parse(localStorage.getItem("anagrafica")) || [];
   anagrafica.push(persona);
-
   localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
 
   window.location.href = "stampa.html";
@@ -119,4 +118,3 @@ function calcolaGenerazione() {
 
 </body>
 </html>
-
