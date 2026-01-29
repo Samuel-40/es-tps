@@ -8,7 +8,7 @@
   <h2>Inserisci Anagrafica Utente</h2>
 
   <form id="anagraficaForm">
-    <!-- Nome e Cognome sulla stessa riga -->
+   
     <label>Nome:
       <input type="text" id="nome" required>
     </label>
@@ -17,6 +17,7 @@
     </label>
     <br><br>
 
+   
     <label>Sesso:</label><br>
     <input type="radio" name="sesso" value="maschio">
     <label>maschio</label><br>
@@ -25,10 +26,16 @@
     <input type="radio" name="sesso" value="altro">
     <label>altro</label><br><br>
 
-
+   
     <label>Indirizzo:
       <input type="text" id="indirizzo" required>
     </label>
+
+   
+    <input type="checkbox" id="box1" value="auto"> <label>ho un'auto</label>
+    <input type="checkbox" id="box2" value="bici"> <label>ho una bici</label>
+    <input type="checkbox" id="box3" value="cavallo"> <label>ho un cavallo</label>
+
     <label>Città:
       <input type="text" id="citta" required>
     </label>
@@ -44,10 +51,6 @@
       <option value="torino">Torino</option>
       <option value="napoli">Napoli</option>
     </select>
-
-    <input type="checkbox" id="box1" value="auto"> <label>ho un'auto</label>
-    <input type="checkbox" id="box2" value="bici"> <label>ho una bici</label>
-    <input type="checkbox" id="box3" value="cavallo"> <label>ho un cavallo</label>
 
     <button type="button" onclick="calcolaGenerazione()">Invia</button>
   </form>
@@ -69,6 +72,7 @@
 
       let provincia = document.querySelector('select[name="provincia"]').value;
 
+     
       let persona = {
         nome: nome,
         cognome: cognome,
@@ -85,8 +89,10 @@
       anagrafica.push(persona);
       localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
 
+     
       window.location.href = "stampa.html";
     }
   </script>
 </body>
 </html>
+
