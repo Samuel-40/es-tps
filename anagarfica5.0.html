@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Anagrafica Utente</title>
+</head>
+<body>
+
+<h2>Inserisci Anagrafica Utente</h2>
+
+<form id="anagraficaForm">
+  <label>Nome:
+    <input type="text" id="nome" required>
+  </label>
+
+  <label>Cognome:
+    <input type="text" id="cognome" required>
+  </label>
+
+  <label>Sesso:</label><br>
+  <input type="radio" name="sesso" value="maschio"> maschio<br>
+  <input type="radio" name="sesso" value="femmina"> femmina<br>
+  <input type="radio" name="sesso" value="altro"> altro<br>
+
+  <label>Indirizzo:
+    <input type="text" id="indirizzo" required>
+  </label>
+
+  <br>
+
+  <input type="checkbox" value="auto"> ho un'auto
+  <input type="checkbox" value="bici"> ho una bici
+  <input type="checkbox" value="cavallo"> ho un cavallo
+
+  <br><br>
+
+  <select name="provincia">
+    <option value="milano">Milano</option>
+    <option value="torino">Torino</option>
+    <option value="napoli">Napoli</option>
+  </select>
+
+  <br><br>
+
+  <label>Città:
+    <input type="text" id="citta" required>
+  </label>
+
+  <label>CAP:
+    <input type="text" id="cap" required>
+  </label>
+
+  <label>Data di nascita:
+    <input type="date" id="dataNascita" required>
+  </label>
+
+  <br><br>
+
+  <button type="button" onclick="calcolaGenerazione()">Invia</button>
+</form>
+
+<script>
+function calcolaGenerazione() {
+
+  let nome = document.getElementById('nome').value;
+  let cognome = document.getElementById('cognome').value;
+  let indirizzo = document.getElementById('indirizzo').value;
+  let citta = document.getElementById('citta').value;
+  let cap = document.getElementById('cap').value;
+  let dataNascita = document.getElementById('dataNascita').value;
+
+  let sesso = document.querySelector('input[name="sesso"]:checked').value;
+  let provincia = document.querySelector('select[name="provincia"]').value;
+
+  let checkbox = document.querySelectorAll('input[type="checkbox"]:checked');
+  let mezzi = [];
+  checkbox.forEach(c => mezzi.push(c.value));
+
+  let persona = {
+    nome: nome,
+    cognome: cognome,
+    sesso: sesso,
+    indirizzo: indirizzo,
+    citta: citta,
+    cap: cap,
+    dataNascita: dataNascita,
+    provincia: provincia,
+    mezzi: mezzi
+  };
+
+  let anagrafica = JSON.parse(localStorage.getItem("anagrafica")) || [];
+  anagrafica.push(persona);
+
+  localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
+
+  window.location.href = "stampa.html";
+}
+</script>
+
+</body>
+</html>
