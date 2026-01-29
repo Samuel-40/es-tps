@@ -5,116 +5,101 @@
   <title>Anagrafica Utente</title>
 </head>
 <body>
+  <h2>Inserisci Anagrafica Utente</h2>
+  <form id="anagraficaForm">
+    <label>Nome:
+      <input type="text" id="nome" required>
+    </label>
 
-<h2>Inserisci Anagrafica Utente</h2>
+    <label>Cognome:
+      <input type="text" id="cognome" required>
+    </label>
 
-<form id="anagraficaForm">
-  <label>Nome:
-    <input type="text" id="nome" required>
-  </label>
+    <label>sesso:</label>
+    <input type="radio" name="sesso" value="maschio">
+    <label>maschio</label>
+    <input type="radio" name="sesso" value="femmina">
+    <label>femmina</label>
+    <input type="radio" name="sesso" value="altro">
+    <label>altro</label>
 
-  <label>Cognome:
-    <input type="text" id="cognome" required>
-  </label>
+    <label>Indirizzo:
+      <input type="text" id="indirizzo" required>
+    </label>
 
-  <label>sesso:</label>
-  <input type="radio" name="sesso" value="maschio">
-  <label>maschio</label>
-  <input type="radio" name="sesso" value="femmina">
-  <label>femmina</label>
-  <input type="radio" name="sesso" value="altro">
-  <label>altro</label>
+    <input type="checkbox" id="box1" name="auto" value="auto">
+    <label> ho un auto</label>
+    <input type="checkbox" id="box2" name="bici" value="bici">
+    <label> ho una bici</label>
+    <input type="checkbox" id="box3" name="cavallo" value="cavallo">
+    <label> ho un cavallo</label>
 
-  <label>Indirizzo:
-    <input type="text" id="indirizzo" required>
-  </label>
+    <select name="provincia">
+      <option value="milano">milano</option>
+      <option value="torino">torino</option>
+      <option value="napoli">napoli</option>
+    </select>
 
-  <input type="checkbox" id="box1" name="auto" value="auto">
-  <label> ho un auto</label>
-  <input type="checkbox" id="box2" name="bici" value="bici">
-  <label> ho una bici</label>
-  <input type="checkbox" id="box3" name="cavallo" value="cavallo">
-  <label> ho un cavallo</label>
+    <select name="materie_preferite" id="materie" multiple>
+      <option value="matematica">Matematica</option>
+      <option value="inglese">inglese</option>
+      <option value="storia">Storia</option>
+    </select>
 
-  <select name="provincia">
-    <option value="milano">milano</option>
-    <option value="torino">torino</option>
-    <option value="napoli">napoli</option>
-  </select>
+    <label>Città:
+      <input type="text" id="citta" required>
+    </label>
 
-  <select name="materie_preferite" id="materie" multiple>
-    <option value="matematica">Matematica</option>
-    <option value="inglese">inglese</option>
-    <option value="storia">Storia</option>
-  </select>
+    <label>CAP:
+      <input type="text" id="cap" required>
+    </label>
 
-  <label>Città:
-    <input type="text" id="citta" required>
-  </label>
+    <label>Data di nascita:
+      <input type="date" id="dataNascita" required>
+    </label>
 
-  <label>CAP:
-    <input type="text" id="cap" required>
-  </label>
+    <button type="button" onclick="calcolaGenerazione()">Invia</button>
+  </form>
 
-  <label>Data di nascita:
-    <input type="date" id="dataNascita" required>
-  </label>
+  <div class="output" id="risultato"></div>
 
-  <button type="button" onclick="calcolaGenerazione()">Invia</button>
-</form>
+  <script>
+    function calcolaGenerazione() {
+      let nome = document.getElementById('nome').value;
+      let cognome = document.getElementById('cognome').value;
+      let indirizzo = document.getElementById('indirizzo').value;
+      let citta = document.getElementById('citta').value;
+      let cap = document.getElementById('cap').value;
+      let dataNascita = document.getElementById('dataNascita').value;
+      let sesso = document.querySelector('input[name="sesso"]:checked');
+      let sessosel = sesso ? sesso.value : "";
 
-<div class="output" id="risultato"></div>
+      let mezzo = document.querySelectorAll('input[type="checkbox"]:checked');
+      let mezziSelezionati = [];
+      mezzo.forEach(cb => mezziSelezionati.push(cb.value));
 
-<script>
-function calcolaGenerazione() {
+      let provincia = document.querySelector('select[name="provincia"]').value;
 
-  nome = document.getElementById('nome').value;
-  cognome = document.getElementById('cognome').value;
-  indirizzo = document.getElementById('indirizzo').value;
-  citta = document.getElementById('citta').value;
-  cap = document.getElementById('cap').value;
-  dataNascita = document.getElementById('dataNascita').value;
+      // ===== SALVATAGGIO SU localStorage =====
+      let persona = {
+        nome: nome,
+        cognome: cognome,
+        sesso: sessosel,
+        indirizzo: indirizzo,
+        citta: citta,
+        cap: cap,
+        dataNascita: dataNascita,
+        provincia: provincia,
+        mezzi: mezziSelezionati
+      };
 
-  sesso = document.querySelector('input[name="sesso"]:checked');
-  sessosel = sesso.value;
+      let anagrafica = JSON.parse(localStorage.getItem("anagrafica")) || [];
+      anagrafica.push(persona);
+      localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
 
-  mezzo = document.querySelectorAll('input[type="checkbox"]:checked');
-  let mezziSelezionati = [];
-  mezzo.forEach(checkbox => {
-    mezziSelezionati.push(checkbox.value);
-  });
-
-  provincia = document.querySelector('select[name="provincia"]').value;
-
-  let persona = {
-    nome: nome,
-    cognome: cognome,
-    sesso: sessosel,
-    indirizzo: indirizzo,
-    citta: citta,
-    cap: cap,
-    dataNascita: dataNascita,
-    provincia: provincia,
-    mezzi: mezziSelezionati
-  };
-
-  let anagrafica = JSON.parse(localStorage.getItem("anagrafica")) || [];
-  anagrafica.push(persona);
-  localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
-
-  window.location.href = "stampa.html";
-}
-</script>
-
-<div id="outnome"></div>
-<div id="outcognome"></div>
-<div id="outindirizzo"></div>
-<div id="outcitta"></div>
-<div id="outcap"></div>
-<div id="outdatanascita"></div>
-<div id="outsesso"></div>
-<div id="outmezzi"></div>
-<div id="outprovincia"></div>
-
+      // Puoi rimandare alla pagina stampa
+      window.location.href = "stampa.html";
+    }
+  </script>
 </body>
 </html>
