@@ -6,62 +6,51 @@
 </head>
 <body>
   <h2>Inserisci Anagrafica Utente</h2>
+
   <form id="anagraficaForm">
+    <!-- Nome e Cognome sulla stessa riga -->
     <label>Nome:
       <input type="text" id="nome" required>
     </label>
-
     <label>Cognome:
       <input type="text" id="cognome" required>
     </label>
+    <br><br>
 
-    <label>sesso:</label>
+    <label>Sesso:</label><br>
     <input type="radio" name="sesso" value="maschio">
-    <label>maschio</label>
+    <label>maschio</label><br>
     <input type="radio" name="sesso" value="femmina">
-    <label>femmina</label>
+    <label>femmina</label><br>
     <input type="radio" name="sesso" value="altro">
-    <label>altro</label>
+    <label>altro</label><br><br>
+
 
     <label>Indirizzo:
       <input type="text" id="indirizzo" required>
     </label>
-
-    <input type="checkbox" id="box1" name="auto" value="auto">
-    <label> ho un auto</label>
-    <input type="checkbox" id="box2" name="bici" value="bici">
-    <label> ho una bici</label>
-    <input type="checkbox" id="box3" name="cavallo" value="cavallo">
-    <label> ho un cavallo</label>
-
-    <select name="provincia">
-      <option value="milano">milano</option>
-      <option value="torino">torino</option>
-      <option value="napoli">napoli</option>
-    </select>
-
-    <select name="materie_preferite" id="materie" multiple>
-      <option value="matematica">Matematica</option>
-      <option value="inglese">inglese</option>
-      <option value="storia">Storia</option>
-    </select>
-
     <label>Città:
       <input type="text" id="citta" required>
     </label>
-
     <label>CAP:
       <input type="text" id="cap" required>
     </label>
-
     <label>Data di nascita:
       <input type="date" id="dataNascita" required>
     </label>
 
+    <select name="provincia">
+      <option value="milano">Milano</option>
+      <option value="torino">Torino</option>
+      <option value="napoli">Napoli</option>
+    </select>
+
+    <input type="checkbox" id="box1" value="auto"> <label>ho un'auto</label>
+    <input type="checkbox" id="box2" value="bici"> <label>ho una bici</label>
+    <input type="checkbox" id="box3" value="cavallo"> <label>ho un cavallo</label>
+
     <button type="button" onclick="calcolaGenerazione()">Invia</button>
   </form>
-
-  <div class="output" id="risultato"></div>
 
   <script>
     function calcolaGenerazione() {
@@ -80,7 +69,6 @@
 
       let provincia = document.querySelector('select[name="provincia"]').value;
 
-      // ===== SALVATAGGIO SU localStorage =====
       let persona = {
         nome: nome,
         cognome: cognome,
@@ -97,7 +85,6 @@
       anagrafica.push(persona);
       localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
 
-      // Puoi rimandare alla pagina stampa
       window.location.href = "stampa.html";
     }
   </script>
