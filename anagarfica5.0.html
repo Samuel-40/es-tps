@@ -17,30 +17,36 @@
     <input type="text" id="cognome" required>
   </label>
 
-  <label>Sesso:</label><br>
-  <input type="radio" name="sesso" value="maschio"> maschio<br>
-  <input type="radio" name="sesso" value="femmina"> femmina<br>
-  <input type="radio" name="sesso" value="altro"> altro<br>
+  <label>sesso:</label><br>
+  <input type="radio" name="sesso" value="maschio">
+  <label>maschio</label><br>
+  <input type="radio" name="sesso" value="femmina">
+  <label>femmina</label><br>
+  <input type="radio" name="sesso" value="altro">
+  <label>altro</label><br>
 
   <label>Indirizzo:
     <input type="text" id="indirizzo" required>
   </label>
 
-  <br>
-
-  <input type="checkbox" value="auto"> ho un'auto
-  <input type="checkbox" value="bici"> ho una bici
-  <input type="checkbox" value="cavallo"> ho un cavallo
-
-  <br><br>
+  <input type="checkbox" id="box1" name="auto" value="auto">
+  <label> ho un auto</label>
+  <input type="checkbox" id="box2" name="bici" value="bici">
+  <label> ho una bici</label>
+  <input type="checkbox" id="box3" name="cavallo" value="cavallo">
+  <label> ho un cavallo</label>
 
   <select name="provincia">
-    <option value="milano">Milano</option>
-    <option value="torino">Torino</option>
-    <option value="napoli">Napoli</option>
+    <option value="milano">milano</option>
+    <option value="torino">torino</option>
+    <option value="napoli">napoli</option>
   </select>
 
-  <br><br>
+  <select name="materie_preferite" id="materie" multiple>
+    <option value="matematica">Matematica</option>
+    <option value="inglese">inglese</option>
+    <option value="storia">Storia</option>
+  </select>
 
   <label>Città:
     <input type="text" id="citta" required>
@@ -54,38 +60,42 @@
     <input type="date" id="dataNascita" required>
   </label>
 
-  <br><br>
-
   <button type="button" onclick="calcolaGenerazione()">Invia</button>
 </form>
+
+<div class="output" id="risultato"></div>
 
 <script>
 function calcolaGenerazione() {
 
-  let nome = document.getElementById('nome').value;
-  let cognome = document.getElementById('cognome').value;
-  let indirizzo = document.getElementById('indirizzo').value;
-  let citta = document.getElementById('citta').value;
-  let cap = document.getElementById('cap').value;
-  let dataNascita = document.getElementById('dataNascita').value;
+  nome = document.getElementById('nome').value;
+  cognome = document.getElementById('cognome').value;
+  indirizzo = document.getElementById('indirizzo').value;
+  citta = document.getElementById('citta').value;
+  cap = document.getElementById('cap').value;
+  dataNascita = document.getElementById('dataNascita').value;
 
-  let sesso = document.querySelector('input[name="sesso"]:checked').value;
-  let provincia = document.querySelector('select[name="provincia"]').value;
+  sesso = document.querySelector('input[name="sesso"]:checked');
+  sessosel = sesso.value;
 
-  let checkbox = document.querySelectorAll('input[type="checkbox"]:checked');
-  let mezzi = [];
-  checkbox.forEach(c => mezzi.push(c.value));
+  mezzo = document.querySelectorAll('input[type="checkbox"]:checked');
+  let mezziSelezionati = [];
+  mezzo.forEach(checkbox => {
+    mezziSelezionati.push(checkbox.value);
+  });
+
+  provincia = document.querySelector('select[name="provincia"]').value;
 
   let persona = {
     nome: nome,
     cognome: cognome,
-    sesso: sesso,
+    sesso: sessosel,
     indirizzo: indirizzo,
     citta: citta,
     cap: cap,
     dataNascita: dataNascita,
     provincia: provincia,
-    mezzi: mezzi
+    mezzi: mezziSelezionati
   };
 
   let anagrafica = JSON.parse(localStorage.getItem("anagrafica")) || [];
@@ -97,5 +107,16 @@ function calcolaGenerazione() {
 }
 </script>
 
+<div id="outnome"></div>
+<div id="outcognome"></div>
+<div id="outindirizzo"></div>
+<div id="outcitta"></div>
+<div id="outcap"></div>
+<div id="outdatanascita"></div>
+<div id="outsesso"></div>
+<div id="outmezzi"></div>
+<div id="outprovincia"></div>
+
 </body>
 </html>
+
