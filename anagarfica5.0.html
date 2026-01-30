@@ -62,13 +62,13 @@
       let cap = document.getElementById('cap').value;
       let dataNascita = document.getElementById('dataNascita').value;
       let sesso = document.querySelector('input[name="sesso"]:checked');
-      let sessosel = sesso ? sesso.value : "";
+     
 
-      let mezzo = document.querySelectorAll('input[type="checkbox"]:checked');
+      let mezzo = document.Selector('input[type="checkbox"]:checked');
       let mezziSelezionati = [];
       mezzo.forEach(cb => mezziSelezionati.push(cb.value));
 
-      let provincia = document.querySelector('select[name="provincia"]').value;
+      let provincia = document.Selector('select[name="provincia"]').value;
 
 
       let persona = {
@@ -83,7 +83,7 @@
         mezzi: mezziSelezionati
       };
 
-      let anagrafica = JSON.parse(localStorage.getItem("anagrafica")) || [];
+      let anagrafica = JSON.parse(localStorage.getItem("anagrafica"));
       anagrafica.push(persona);
       localStorage.setItem("anagrafica", JSON.stringify(anagrafica));
 
