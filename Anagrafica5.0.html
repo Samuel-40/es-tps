@@ -6,6 +6,7 @@
 </head>
 <body>
 <h2>Anagrafica Utente</h2>
+
 Nome: <input type="text" id="nome"><br><br>
 Cognome: <input type="text" id="cognome"><br><br>
 Città: <input type="text" id="citta"><br><br>
@@ -47,63 +48,85 @@ Materie preferite<br>
 <a href="stampa.html">Stampa</a>
 
 <script>
-let ele = JSON.parse(localStorage.getItem("elenco"));
+// inizializza array sicuro
+let ele = JSON.parse(localStorage.getItem("elenco")) || [];
 
+// funzione per determinare generazione
 function getGenerazione(anno) {
-if (anno >= 2013) return "Generazione Alpha";
-else if (anno >= 1997) return "Generazione Z";
-else if (anno >= 1981) return "Millennials";
-else if (anno >= 1965) return "Generazione X";
-else if (anno >= 1946) return "Baby Boomers";
-else if (anno >= 1928) return "Generazione Silenziosa";
-else if (anno >= 1901) return "Greatest Generation";
-else return "Generazione non definita";
+    if (anno >= 2013) return "Generazione Alpha";
+    else if (anno >= 1997) return "Generazione Z";
+    else if (anno >= 1981) return "Millennials";
+    else if (anno >= 1965) return "Generazione X";
+    else if (anno >= 1946) return "Baby Boomers";
+    else if (anno >= 1928) return "Generazione Silenziosa";
+    else if (anno >= 1901) return "Greatest Generation";
+    else return "Generazione non definita";
 }
 
 function mostraRisultato() {
-let persona = {
-nome: document.getElementById("nome").value,
-cognome: document.getElementById("cognome").value,
-citta: document.getElementById("citta").value,
-cap: document.getElementById("cap").value,
-dataNascita: document.getElementById("dataNascita").value,
+    let persona = {
+        nome: document.getElementById("nome").value,
+        cognome: document.getElementById("cognome").value,
+        citta: document.getElementById("citta").value,
+        cap: document.getElementById("cap").value,
+        dataNascita: document.getElementById("dataNascita").value,
 
-sesso: (function(){
-if (document.getElementById("sessoM").checked) return "Maschio";
-if (document.getElementById("sessoF").checked) return "Femmina";
-if (document.getElementById("sessoAltro").checked) return "Altro";
-return "N/D";
-})(),
+        sesso: (function(){
+            if (document.getElementById("sessoM").checked) return "Maschio";
+            if (document.getElementById("sessoF").checked) return "Femmina";
+            if (document.getElementById("sessoAltro").checked) return "Altro";
+            return "N/D";
+        })(),
 
-mezzi: (function(){
-let m = [];
-if (document.getElementById("auto").checked) m.push("Auto");
-if (document.getElementById("moto").checked) m.push("Moto");
-if (document.getElementById("bici").checked) m.push("Bici");
-if (document.getElementById("cavallo").checked) m.push("Cavallo");
-if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
-return m;
-})(),
+        mezzi: (function(){
+            let m = [];
+            if (document.getElementById("auto").checked) m.push("Auto");
+            if (document.getElementById("moto").checked) m.push("Moto");
+            if (document.getElementById("bici").checked) m.push("Bici");
+            if (document.getElementById("cavallo").checked) m.push("Cavallo");
+            if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
+            return m;
+        })(),
 
-provincia: document.getElementById("provincia").value,
+        provincia: document.getElementById("provincia").value,
 
-materie: (function(){
-let lista = [];
-let opzioni = document.getElementById("materie").options;
-for (let i = 0; i < opzioni.length; i++) {
-if (opzioni[i].selected) lista.push(opzioni[i].value);
-}
-return lista;
-})()
-};
+        materie: (function(){
+            let lista = [];
+            let opzioni = document.getElementById("materie").options;
+            for (let i = 0; i < opzioni.length; i++) {
+                if (opzioni[i].selected) lista.push(opzioni[i].value);
+            }
+            return lista;
+        })()
+    };
 
-let anno = new Date(persona.dataNascita).getFullYear();
-let oggi = new Date().getFullYear();
-persona.eta = oggi - anno;
-persona.generazione = getGenerazione(anno);
+    let anno = new Date(persona.dataNascita).getFullYear();
+    let oggi = new Date().getFullYear();
+    persona.eta = oggi - anno;
+    persona.generazione = getGenerazione(anno);
 
-ele.push(persona);
-localStorage.setItem("elenco", JSON.stringify(ele));
+    ele.push(persona);
+    localStorage.setItem("elenco", JSON.stringify(ele));
+
+    // feedback all’utente
+    alert("Dati salvati correttamente!");
+    // pulire i campi dopo invio (opzionale)
+    document.getElementById("nome").value = "";
+    document.getElementById("cognome").value = "";
+    document.getElementById("citta").value = "";
+    document.getElementById("cap").value = "";
+    document.getElementById("dataNascita").value = "";
+    document.getElementById("sessoM").checked = false;
+    document.getElementById("sessoF").checked = false;
+    document.getElementById("sessoAltro").checked = false;
+    document.getElementById("auto").checked = false;
+    document.getElementById("moto").checked = false;
+    document.getElementById("bici").checked = false;
+    document.getElementById("cavallo").checked = false;
+    document.getElementById("deltaplano").checked = false;
+    document.getElementById("provincia").selectedIndex = 0;
+    let materie = document.getElementById("materie").options;
+    for (let i=0; i<materie.length; i++) materie[i].selected = false;
 }
 </script>
 </body>
