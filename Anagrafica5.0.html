@@ -5,7 +5,9 @@
 <title>Anagrafica 5.0</title>
 </head>
 <body>
-<h2>Anagrafica Utente</h2>
+
+<h2>Anagrafica5.0</h2>
+
 Nome: <input type="text" id="nome"><br><br>
 Cognome: <input type="text" id="cognome"><br><br>
 Città: <input type="text" id="citta"><br><br>
@@ -13,16 +15,16 @@ CAP: <input type="text" id="cap"><br><br>
 Data di nascita: <input type="date" id="dataNascita"><br><br>
 
 Sesso:<br>
-<input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
-<input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
-<input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
+<input type="radio" id="sessoM" name="sesso"> Maschio<br>
+<input type="radio" id="sessoF" name="sesso"> Femmina<br>
+<input type="radio" id="sessoAltro" name="sesso"> Altro<br><br>
 
 Mezzi posseduti:<br>
-<input type="checkbox" id="auto" value="Auto"> Auto
-<input type="checkbox" id="moto" value="Moto"> Moto
-<input type="checkbox" id="bici" value="Bici"> Bici
-<input type="checkbox" id="cavallo" value="Cavallo"> Cavallo
-<input type="checkbox" id="deltaplano" value="Deltaplano"> Deltaplano<br><br>
+<input type="checkbox" id="auto"> Auto
+<input type="checkbox" id="moto"> Moto
+<input type="checkbox" id="bici"> Bici
+<input type="checkbox" id="cavallo"> Cavallo
+<input type="checkbox" id="deltaplano"> Deltaplano<br><br>
 
 Provincia:
 <select id="provincia">
@@ -33,20 +35,22 @@ Provincia:
 <option value="FI">Firenze</option>
 </select><br><br>
 
-Materie preferite :<br>
+Materie preferite:<br>
 <select id="materie" multiple size="5">
 <option value="Italiano">Italiano</option>
 <option value="Storia">Storia</option>
 <option value="Matematica">Matematica</option>
-<option value="TPSIT">TPS</option>
+<option value="TPSIT">TPSIT</option>
 <option value="Inglese">Inglese</option>
 </select><br><br>
 
 <button onclick="mostraRisultato()">Invia</button>
+
 <br><br>
 <a href="stampa.html">Stampa</a>
 
 <script>
+
 let ele = JSON.parse(localStorage.getItem("elenco"));
 
 function getGenerazione(anno) {
@@ -61,51 +65,58 @@ else return "Generazione non definita";
 }
 
 function mostraRisultato() {
-let persona = {
-nome: document.getElementById("nome").value,
-cognome: document.getElementById("cognome").value,
-citta: document.getElementById("citta").value,
-cap: document.getElementById("cap").value,
-dataNascita: document.getElementById("dataNascita").value,
 
-sesso: (function(){
-if (document.getElementById("sessoM").checked) return "Maschio";
-if (document.getElementById("sessoF").checked) return "Femmina";
-if (document.getElementById("sessoAltro").checked) return "Altro";
-return "N/D";
+let nome = document.getElementById("nome").value;
+let cognome = document.getElementById("cognome").value;
+let citta = document.getElementById("citta").value;
+let cap = document.getElementById("cap").value;
+let dataNascita = document.getElementById("dataNascita").value;
 
+let sesso = "N/D";
+if (document.getElementById("sessoM").checked) sesso = "Maschio";
+if (document.getElementById("sessoF").checked) sesso = "Femmina";
+if (document.getElementById("sessoAltro").checked) sesso = "Altro";
 
-mezzi: (function(){
-let m = [];
-if (document.getElementById("auto").checked) m.push("Auto");
-if (document.getElementById("moto").checked) m.push("Moto");
-if (document.getElementById("bici").checked) m.push("Bici");
-if (document.getElementById("cavallo").checked) m.push("Cavallo");
-if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
-return m;
+let mezzi = [];
+if (document.getElementById("auto").checked) mezzi.push("Auto");
+if (document.getElementById("moto").checked) mezzi.push("Moto");
+if (document.getElementById("bici").checked) mezzi.push("Bici");
+if (document.getElementById("cavallo").checked) mezzi.push("Cavallo");
+if (document.getElementById("deltaplano").checked) mezzi.push("Deltaplano");
 
+let provincia = document.getElementById("provincia").value;
 
-provincia: document.getElementById("provincia").value,
-
-materie: (function(){
-let lista = [];
+let materie = [];
 let opzioni = document.getElementById("materie").options;
 for (let i = 0; i < opzioni.length; i++) {
-if (opzioni[i].selected) lista.push(opzioni[i].value);
-}
-return lista;
-
+if (opzioni[i].selected) materie.push(opzioni[i].value);
 }
 
-let anno = new Date(persona.dataNascita).getFullYear();
+let anno = new Date(dataNascita).getFullYear();
 let oggi = new Date().getFullYear();
-persona.eta = oggi - anno;
-persona.generazione = getGenerazione(anno);
+let eta = oggi - anno;
+let generazione = getGenerazione(anno);
+
+let persona = {
+nome: nome,
+cognome: cognome,
+citta: citta,
+cap: cap,
+dataNascita: dataNascita,
+sesso: sesso,
+mezzi: mezzi,
+provincia: provincia,
+materie: materie,
+eta: eta,
+generazione: generazione
+};
 
 ele.push(persona);
-localStorage.setItem("elenco", JSON.stringify(ele));
+localStorage.setItem("elenco", JSON.stringify(ele))
+
 }
+
 </script>
+
 </body>
 </html>
-
