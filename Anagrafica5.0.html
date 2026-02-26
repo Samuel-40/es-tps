@@ -2,116 +2,110 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Anagrafica Utente</title>
+<title>Anagrafica 5.0</title>
 </head>
 <body>
-  <h2>Inserisci Anagrafica Utente</h2>
-  <form id="anagraficaForm">
-    <label>Nome:
-      <input type="text" id="nome" required>
-    </label><br><br>
+<h2>Anagrafica Utente</h2>
+Nome: <input type="text" id="nome"><br><br>
+Cognome: <input type="text" id="cognome"><br><br>
+Città: <input type="text" id="citta"><br><br>
+CAP: <input type="text" id="cap"><br><br>
+Data di nascita: <input type="date" id="dataNascita"><br><br>
 
-    <label>Cognome:
-      <input type="text" id="cognome" required>
-    </label><br><br>
+Sesso:<br>
+<input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
+<input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
+<input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
 
-    <label>Sesso:</label><br>
-    <input type="radio" name="sesso" id="sessoM" value="maschio">
-    <label for="sessoM">Maschio</label><br>
-    <input type="radio" name="sesso" id="sessoF" value="femmina">
-    <label for="sessoF">Femmina</label><br>
-    <input type="radio" name="sesso" id="sessoAltro" value="altro">
-    <label for="sessoAltro">Altro</label><br><br>
+Mezzi posseduti:<br>
+<input type="checkbox" id="auto" value="Auto"> Auto
+<input type="checkbox" id="moto" value="Moto"> Moto
+<input type="checkbox" id="bici" value="Bici"> Bici
+<input type="checkbox" id="cavallo" value="Cavallo"> Cavallo
+<input type="checkbox" id="deltaplano" value="Deltaplano"> Deltaplano<br><br>
 
-    <label>Indirizzo:
-      <input type="text" id="indirizzo" required>
-    </label><br><br>
+Provincia:
+<select id="provincia">
+<option value="MI">Milano</option>
+<option value="VA">Varese</option>
+<option value="NA">Napoli</option>
+<option value="TO">Torino</option>
+<option value="FI">Firenze</option>
+</select><br><br>
 
-    <input type="checkbox" id="auto" value="auto">
-    <label for="auto">Ho un'auto</label><br>
-    <input type="checkbox" id="bici" value="bici">
-    <label for="bici">Ho una bici</label><br>
-    <input type="checkbox" id="cavallo" value="cavallo">
-    <label for="cavallo">Ho un cavallo</label><br><br>
+Materie preferite (CTRL+click per più scelte):<br>
+<select id="materie" multiple size="5">
+<option value="Italiano">Italiano</option>
+<option value="Storia">Storia</option>
+<option value="Matematica">Matematica</option>
+<option value="TPSIT">TPS</option>
+<option value="Inglese">Inglese</option>
+</select><br><br>
 
-    <label>Provincia:
-      <select id="provincia">
-        <option value="milano">Milano</option>
-        <option value="torino">Torino</option>
-        <option value="napoli">Napoli</option>
-      </select>
-    </label><br><br>
+<button onclick="mostraRisultato()">Invia</button>
+<br><br>
+<a href="stampaAnagrafica.html">Stampa</a>
 
-    <label>Materie preferite:
-      <select name="materie_preferite" id="materie" multiple>
-        <option value="matematica">Matematica</option>
-        <option value="inglese">Inglese</option>
-        <option value="storia">Storia</option>
-      </select>
-    </label><br><br>
+<script>
+let ele = JSON.parse(localStorage.getItem("elenco"));
 
-    <label>Città:
-      <input type="text" id="citta" required>
-    </label><br><br>
+function getGenerazione(anno) {
+if (anno >= 2013) return "Generazione Alpha";
+else if (anno >= 1997) return "Generazione Z";
+else if (anno >= 1981) return "Millennials";
+else if (anno >= 1965) return "Generazione X";
+else if (anno >= 1946) return "Baby Boomers";
+else if (anno >= 1928) return "Generazione Silenziosa";
+else if (anno >= 1901) return "Greatest Generation";
+else return "Generazione non definita";
+}
 
-    <label>CAP:
-      <input type="text" id="cap" required>
-    </label><br><br>
+function mostraRisultato() {
+let persona = {
+nome: document.getElementById("nome").value,
+cognome: document.getElementById("cognome").value,
+citta: document.getElementById("citta").value,
+cap: document.getElementById("cap").value,
+dataNascita: document.getElementById("dataNascita").value,
 
-    <label>Data di nascita:
-      <input type="date" id="dataNascita" required>
-    </label><br><br>
+sesso: (function(){
+if (document.getElementById("sessoM").checked) return "Maschio";
+if (document.getElementById("sessoF").checked) return "Femmina";
+if (document.getElementById("sessoAltro").checked) return "Altro";
+return "N/D";
 
-    <button type="button" onclick="mostraRisultato()">Invia</button>
-    <a href="anagrafica5.html">Vai a stampa</a>
-  </form>
 
-  <script>
-    let ele = JSON.parse(localStorage.getItem("elenco")) || [];
+mezzi: (function(){
+let m = [];
+if (document.getElementById("auto").checked) m.push("Auto");
+if (document.getElementById("moto").checked) m.push("Moto");
+if (document.getElementById("bici").checked) m.push("Bici");
+if (document.getElementById("cavallo").checked) m.push("Cavallo");
+if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
+return m;
 
-    function getGenerazione(anno) {
-      if (anno >= 2013) return "Generazione Alpha";
-      else if (anno >= 1997) return "Generazione Z";
-      else if (anno >= 1981) return "Millennials";
-      else if (anno >= 1965) return "Generazione X";
-      else if (anno >= 1946) return "Baby Boomers";
-      else if (anno >= 1928) return "Generazione Silenziosa";
-      else if (anno >= 1901) return "Greatest Generation";
-      else return "Generazione non definita";
-    }
 
-    function mostraRisultato() {
-      let persona = {
-        nome: document.getElementById("nome").value,
-        cognome: document.getElementById("cognome").value,
-        citta: document.getElementById("citta").value,
-        cap: document.getElementById("cap").value,
-        dataNascita: document.getElementById("dataNascita").value,
-        sesso: (document.getElementById("sessoM").checked ? "Maschio" :
-                document.getElementById("sessoF").checked ? "Femmina" :
-                document.getElementById("sessoAltro").checked ? "Altro" : "N/D"),
-        mezzi: [
-          ...(document.getElementById("auto").checked ? ["Auto"] : []),
-          ...(document.getElementById("bici").checked ? ["Bici"] : []),
-          ...(document.getElementById("cavallo").checked ? ["Cavallo"] : [])
-        ],
-        provincia: document.getElementById("provincia").value,
-        materie: Array.from(document.getElementById("materie").selectedOptions).map(opt => opt.value)
-      };
+provincia: document.getElementById("provincia").value,
 
-      let anno = new Date(persona.dataNascita).getFullYear();
-      let oggi = new Date().getFullYear();
-      persona.eta = oggi - anno;
-      persona.generazione = getGenerazione(anno);
+materie: (function(){
+let lista = [];
+let opzioni = document.getElementById("materie").options;
+for (let i = 0; i < opzioni.length; i++) {
+if (opzioni[i].selected) lista.push(opzioni[i].value);
+}
+return lista;
 
-      ele.push(persona);
-      localStorage.setItem("elenco", JSON.stringify(ele));
+}
 
-      alert("Dati salvati correttamente!");
-      document.getElementById("anagraficaForm").reset();
-    }
-  </script>
+let anno = new Date(persona.dataNascita).getFullYear();
+let oggi = new Date().getFullYear();
+persona.eta = oggi - anno;
+persona.generazione = getGenerazione(anno);
+
+ele.push(persona);
+localStorage.setItem("elenco", JSON.stringify(ele));
+}
+</script>
 </body>
 </html>
-
 
