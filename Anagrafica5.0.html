@@ -48,10 +48,8 @@ Materie preferite<br>
 <a href="stampa.html">Stampa</a>
 
 <script>
-// inizializza array sicuro
-let ele = JSON.parse(localStorage.getItem("elenco")) || [];
-
-// funzione per determinare generazione
+let ele = JSON.parse(localStorage.getItem("elenco"));
+    
 function getGenerazione(anno) {
     if (anno >= 2013) return "Generazione Alpha";
     else if (anno >= 1997) return "Generazione Z";
@@ -76,7 +74,7 @@ function mostraRisultato() {
             if (document.getElementById("sessoF").checked) return "Femmina";
             if (document.getElementById("sessoAltro").checked) return "Altro";
             return "N/D";
-        })(),
+        }
 
         mezzi: (function(){
             let m = [];
@@ -86,7 +84,7 @@ function mostraRisultato() {
             if (document.getElementById("cavallo").checked) m.push("Cavallo");
             if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
             return m;
-        })(),
+        }
 
         provincia: document.getElementById("provincia").value,
 
@@ -97,7 +95,7 @@ function mostraRisultato() {
                 if (opzioni[i].selected) lista.push(opzioni[i].value);
             }
             return lista;
-        })()
+        }
     };
 
     let anno = new Date(persona.dataNascita).getFullYear();
@@ -107,10 +105,7 @@ function mostraRisultato() {
 
     ele.push(persona);
     localStorage.setItem("elenco", JSON.stringify(ele));
-
-    // feedback all’utente
-    alert("Dati salvati correttamente!");
-    // pulire i campi dopo invio (opzionale)
+    
     document.getElementById("nome").value = "";
     document.getElementById("cognome").value = "";
     document.getElementById("citta").value = "";
