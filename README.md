@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<title>Anagrafica 5.0</title>
+</head>
+<body>
+<h2>Anagrafica Utente</h2>
+
+Nome: <input type="text" id="nome"><br><br>
+Cognome: <input type="text" id="cognome"><br><br>
+Città: <input type="text" id="citta"><br><br>
+CAP: <input type="text" id="cap"><br><br>
+Data di nascita: <input type="date" id="dataNascita"><br><br>
+Email: <input type="date" id="email"><br><br>
+CodiceFiscale: <input type="date" id="codiceFiscale"><br><br>
+
+Sesso:<br>
+<input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
+<input type="radio" id="sessoF" name="sesso" value="Femmina"> Femmina<br>
+<input type="radio" id="sessoAltro" name="sesso" value="Altro"> Altro<br><br>
+
+Mezzi posseduti:<br>
+<input type="checkbox" id="auto" value="Auto"> Auto
+<input type="checkbox" id="moto" value="Moto"> Moto
+<input type="checkbox" id="bici" value="Bici"> Bici
+<input type="checkbox" id="cavallo" value="Cavallo"> Cavallo
+<input type="checkbox" id="deltaplano" value="Deltaplano"> Deltaplano<br><br>
+
+Provincia:
+<select id="provincia">
+<option value="MI">Milano</option>
+<option value="VA">Varese</option>
+<option value="NA">Napoli</option>
+<option value="TO">Torino</option>
+<option value="FI">Firenze</option>
+</select><br><br>
+
+Materie preferite<br>
+<select id="materie" multiple size="5">
+<option value="Italiano">Italiano</option>
+<option value="Storia">Storia</option>
+<option value="Matematica">Matematica</option>
+<option value="TPSIT">TPS</option>
+<option value="Inglese">Inglese</option>
+</select><br><br>
+
+<button onclick="mostraRisultato()">Invia</button>
+<br><br>
+<a href="stampa.html">Stampa</a>
+
+<script>
+let ele = JSON.parse(localStorage.getItem("elenco"));
+    
+function getGenerazione(anno) {
+    if (anno >= 2013) return "Generazione Alpha";
+    else if (anno >= 1997) return "Generazione Z";
+    else if (anno >= 1981) return "Millennials";
+    else if (anno >= 1965) return "Generazione X";
+    else if (anno >= 1946) return "Baby Boomers";
+    else if (anno >= 1928) return "Generazione Silenziosa";
+    else if (anno >= 1901) return "Greatest Generation";
+    else return "Generazione non definita";
+}
+
+function mostraRisultato() {
+    let persona = {
+        nome: document.getElementById("nome").value,
+        cognome: document.getElementById("cognome").value,
+        citta: document.getElementById("citta").value,
+        cap: document.getElementById("cap").value,
+        dataNascita: document.getElementById("dataNascita").value,
+        codiceFiscale: document.getElementById("codiceFiscale").value,
+
+        sesso: (function(){
+            if (document.getElementById("sessoM").checked) return "Maschio";
+            if (document.getElementById("sessoF").checked) return "Femmina";
+            if (document.getElementById("sessoAltro").checked) return "Altro";
+            return "N/D";
+        }
+
+        mezzi: (function(){
+            let m = [];
+            if (document.getElementById("auto").checked) m.push("Auto");
+            if (document.getElementById("moto").checked) m.push("Moto");
+            if (document.getElementById("bici").checked) m.push("Bici");
+            if (document.getElementById("cavallo").checked) m.push("Cavallo");
+            if (document.getElementById("deltaplano").checked) m.push("Deltaplano");
+            return m;
+        }
+
+        provincia: document.getElementById("provincia").value,
+
+        materie: (function(){
+            let lista = [];
+            let opzioni = document.getElementById("materie").options;
+            for (let i = 0; i < opzioni.length; i++) {
+                if (opzioni[i].selected) lista.push(opzioni[i].value);
+            }
+            return lista;
+        }
+    };
+
+    let anno = new Date(persona.dataNascita).getFullYear();
+    let oggi = new Date().getFullYear();
+    persona.eta = oggi - anno;
+    persona.generazione = getGenerazione(anno);
+
+    ele.push(persona);
+    localStorage.setItem("elenco", JSON.stringify(ele));
+    
+    document.getElementById("nome").value = "";
+    document.getElementById("cognome").value = "";
+    document.getElementById("citta").value = "";
+    document.getElementById("email").value = "";
+    document.getElementById("codiceFiscale").value = "";
+    document.getElementById("cap").value = "";
+    document.getElementById("dataNascita").value = "";
+    document.getElementById("sessoM").checked = false;
+    document.getElementById("sessoF").checked = false;
+    document.getElementById("sessoAltro").checked = false;
+    document.getElementById("auto").checked = false;
+    document.getElementById("moto").checked = false;
+    document.getElementById("bici").checked = false;
+    document.getElementById("cavallo").checked = false;
+    document.getElementById("deltaplano").checked = false;
+    document.getElementById("provincia").selectedIndex = 0;
+    let materie = document.getElementById("materie").options;
+    for (let i=0; i<materie.length; i++) materie[i].selected = false;
+}
+</script>
+</body>
+</html>
