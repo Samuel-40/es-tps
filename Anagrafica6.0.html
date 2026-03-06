@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="UTF-8">
-<title>Anagrafica 5.0</title>
+<title>Anagrafica 6.0</title>
 </head>
 <body>
 <h2>Anagrafica Utente</h2>
@@ -11,9 +11,8 @@ Nome: <input type="text" id="nome"><br><br>
 Cognome: <input type="text" id="cognome"><br><br>
 Città: <input type="text" id="citta"><br><br>
 CAP: <input type="text" id="cap"><br><br>
-Email: <input type="date" id="email"><br><br>
-CodiceFiscale: <input type="date" id="codiceFiscale"><br><br>
-Data di nascita: <input type="date" id="dataNascita"><br><br>
+Email: <input type="text" id="email"><br><br>
+CodiceFiscale: <input type="text" id="codiceFiscale"><br><br>
 
 Sesso:<br>
 <input type="radio" id="sessoM" name="sesso" value="Maschio"> Maschio<br>
@@ -69,8 +68,9 @@ function mostraRisultato() {
         cognome: document.getElementById("cognome").value,
         citta: document.getElementById("citta").value,
         cap: document.getElementById("cap").value,
-        dataNascita: document.getElementById("dataNascita").value,
+        email: document.getElementById("email").value,
         codiceFiscale: document.getElementById("codiceFiscale").value,
+        dataNascita: document.getElementById("dataNascita").value,
 
         sesso: (function(){
             if (document.getElementById("sessoM").checked) return "Maschio";
