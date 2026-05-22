@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vetrina</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#f4f4f4;
+}
+
+.container{
+display:flex;
+min-height:100vh;
+}
+
+.sidebar{
+width:220px;
+background:#111;
+padding:30px 20px;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+margin-bottom:40px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+padding:15px;
+margin-bottom:10px;
+border-radius:8px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#333;
+}
+
+.cart-counter{
+margin-top:20px;
+background:white;
+padding:12px;
+border-radius:8px;
+font-weight:bold;
+text-align:center;
+}
+
+.products{
+flex:1;
+padding:40px;
+display:grid;
+grid-template-columns:repeat(auto-fit, minmax(280px,1fr));
+gap:25px;
+animation:fadeIn 1s ease;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+box-shadow:0 0 10px rgba(0,0,0,0.1);
+transition:0.3s;
+}
+
+.card:hover{
+transform:translateY(-5px);
+}
+
+.card img{
+width:100%;
+height:280px;
+object-fit:cover;
+}
+
+.card-content{
+padding:20px;
+}
+
+.card h3{
+margin-bottom:10px;
+}
+
+.card p{
+margin-bottom:10px;
+color:#555;
+}
+
+.price{
+font-size:22px;
+font-weight:bold;
+}
+
+button{
+width:100%;
+padding:12px;
+background:black;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#333;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+}
+to{
+opacity:1;
+}
+}
+
+</style>
+</head>
+<body>
+
+<script>
+
+if(localStorage.getItem("isLoggedIn") !== "true"){
+window.location.href = "registrazioneEcommerce.html";
+}
+
+</script>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="logo">NewExpedition</div>
+
+<a href="registrazioneEcommerce.html">Registrazione</a>
+<a href="loginEcommerce.html">Login</a>
+<a href="vetrinaEcommerce.html">Vetrina</a>
+<a href="carrelloEcommerce.html">Carrello</a>
+
+<div class="cart-counter">
+Carrello: <span id="cartCount">0</span>
+</div>
+
+</div>
+
+<div class="products" id="productsContainer">
+
+</div>
+
+</div>
+
+<script>
+
+let carrello = JSON.parse(localStorage.getItem("carrello")) || [];
+
+function aggiornaContatore(){
+document.getElementById("cartCount").innerText = carrello.length;
+}
+
+aggiornaContatore();
+
+fetch("prodotti.csv")
+.then(response => response.text())
+.then(data => {
+
+let righe = data.split("\n");
+
+righe.shift();
+
+let container = document.getElementById("productsContainer");
+
+righe.forEach(riga => {
+
+let colonne = riga.split(",");
+
+let prodotto = {
+nome:colonne[0],
+marca:colonne[1],
+descrizione:colonne[2],
+immagine:colonne[3],
+prezzo:colonne[4],
+dimensioni:colonne[5],
+taglia:colonne[6],
+spedizione:colonne[7]
+};
+
+let card = document.createElement("div");
+
+card.classList.add("card");
+
+card.innerHTML = `
+
+<img src="${prodotto.immagine}">
+
+<div class="card-content">
+
+<h3>${prodotto.nome}</h3>
+
+<p><strong>Marca:</strong> ${prodotto.marca}</p>
+
+<p>${prodotto.descrizione}</p>
+
+<p><strong>Dimensioni:</strong> ${prodotto.dimensioni}</p>
+
+<p><strong>Taglia:</strong> ${prodotto.taglia}</p>
+
+<p><strong>Spedizione:</strong> ${prodotto.spedizione}</p>
+
+<p class="price">€ ${prodotto.prezzo}</p>
+
+<button>Aggiungi al carrello</button>
+
+</div>
+
+`;
+
+card.querySelector("button").addEventListener("click", function(){
+
+carrello.push(prodotto);
+
+localStorage.setItem("carrello", JSON.stringify(carrello));
+
+aggiornaContatore();
+
+alert("Prodotto aggiunto");
+
+});
+
+container.appendChild(card);
+
+});
+
+});
+
+</script>
+
+</body>
+</html>
