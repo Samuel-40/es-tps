@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial;
+}
+
+body{
+background:#f4f4f4;
+}
+
+.container{
+display:flex;
+min-height:100vh;
+animation:fadeIn 1s ease;
+}
+
+.sidebar{
+width:220px;
+background:#111;
+padding:30px 20px;
+}
+
+.logo{
+color:white;
+font-size:28px;
+font-weight:bold;
+margin-bottom:40px;
+}
+
+.sidebar a{
+display:block;
+color:white;
+text-decoration:none;
+padding:15px;
+margin-bottom:10px;
+border-radius:8px;
+transition:0.3s;
+}
+
+.sidebar a:hover{
+background:#333;
+transform:translateX(5px);
+}
+
+.center{
+width:40%;
+display:flex;
+justify-content:center;
+align-items:center;
+}
+
+.form-box{
+background:white;
+padding:40px;
+width:450px;
+border-radius:15px;
+box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.form-box h2{
+text-align:center;
+margin-bottom:30px;
+}
+
+.input-group{
+margin-bottom:20px;
+}
+
+.input-group label{
+display:block;
+margin-bottom:8px;
+font-weight:bold;
+}
+
+.input-group input{
+width:100%;
+padding:12px;
+border:1px solid #ccc;
+border-radius:8px;
+}
+
+button{
+width:100%;
+padding:14px;
+background:black;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+button:hover{
+background:#333;
+}
+
+.right{
+flex:1;
+padding:60px;
+display:flex;
+flex-direction:column;
+justify-content:center;
+}
+
+.right h1{
+font-size:42px;
+margin-bottom:20px;
+}
+
+.right li{
+margin-bottom:15px;
+color:#555;
+}
+
+@keyframes fadeIn{
+from{
+opacity:0;
+transform:translateY(20px);
+}
+to{
+opacity:1;
+transform:translateY(0);
+}
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<div class="sidebar">
+
+<div class="logo">NewExpedition</div>
+
+<a href="registrazioneEcommerce.html">Registrazione</a>
+<a href="loginEcommerce.html">Login</a>
+<a href="vetrinaEcommerce.html">Vetrina</a>
+<a href="carrelloEcommerce.html">Carrello</a>
+
+</div>
+
+<div class="center">
+
+<div class="form-box">
+
+<h2>Login</h2>
+
+<form id="loginForm">
+
+<div class="input-group">
+<label>Email</label>
+<input type="email" id="email">
+</div>
+
+<div class="input-group">
+<label>Password</label>
+<input type="password" id="password">
+</div>
+
+<button type="submit">Accedi</button>
+
+</form>
+
+</div>
+
+</div>
+
+<div class="right">
+
+<h1>Bentornato</h1>
+
+<ul>
+<li>Sconti esclusivi</li>
+<li>Nuove collezioni</li>
+<li>Spedizioni rapide</li>
+<li>Gestione carrello</li>
+</ul>
+
+</div>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", function(event){
+
+event.preventDefault();
+
+let email = document.getElementById("email").value;
+let password = document.getElementById("password").value;
+
+let utente = JSON.parse(localStorage.getItem("utente"));
+
+if(!utente){
+alert("Registrati prima");
+return;
+}
+
+if(email === utente.email && password === utente.password){
+
+localStorage.setItem("isLoggedIn", "true");
+
+window.location.href = "vetrinaEcommerce.html";
+
+}else{
+alert("Credenziali errate");
+}
+
+});
+
+</script>
+
+</body>
+</html>
