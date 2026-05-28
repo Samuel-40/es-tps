@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewSofa - Il Tuo Carrello</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f4f1ea; color: #111111; display: flex; min-height: 100vh; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .main-container { display: flex; width: 100%; animation: fadeIn 0.6s ease-out forwards; }
+        
+        .navbar { width: 250px; background-color: #111111; color: #ffffff; padding: 40px 20px; display: flex; flex-direction: column; gap: 25px; position: fixed; height: 100vh; }
+        .navbar h1 { color: #d4af37; font-size: 24px; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
+        .navbar a { color: #cccccc; text-decoration: none; font-size: 16px; transition: all 0.3s ease; padding: 10px 5px; border-left: 3px solid transparent; }
+        .navbar a:hover, .navbar a.active { color: #d4af37; border-left: 3px solid #d4af37; padding-left: 12px; }
+        .cart-badge { background-color: #d4af37; color: #111111; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-left: 5px; }
+        
+        .content-wrapper { margin-left: 250px; padding: 40px; width: calc(100% - 250px); display: flex; gap: 40px; }
+        
+        .cart-items-section { flex: 1.4; background-color: #ffffff; padding: 30px; border-radius: 4px; border: 1px solid #e0dacb; }
+        .cart-items-section h2 { font-size: 24px; margin-bottom: 25px; text-transform: uppercase; border-bottom: 2px solid #111111; padding-bottom: 10px; }
+        
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #e0dacb; }
+        .cart-item-info h4 { font-size: 16px; color: #111111; font-weight: 600; }
+        .cart-item-price { font-size: 16px; font-weight: bold; color: #aa8c2c; }
+        
+        .btn-remove { background: none; border: none; color: #b22222; cursor: pointer; font-size: 13px; margin-top: 5px; text-decoration: underline; }
+        
+        .checkout-section { flex: 0.8; background-color: #faf9f6; padding: 30px; border-radius: 4px; border: 1px solid #e0dacb; height: fit-content; display: flex; flex-direction: column; gap: 20px; }
+        .checkout-section h3 { font-size: 20px; text-transform: uppercase; color: #111111; border-bottom: 1px solid #e0dacb; padding-bottom: 10px; }
+        
+        .summary-row { display: flex; justify-content: space-between; font-size: 16px; margin-bottom: 10px; }
+        .summary-total { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; border-top: 2px dashed #d4af37; padding-top: 15px; color: #111111; }
+        
+        .btn-gold { background-color: #d4af37; color: #111111; border: none; padding: 14px 20px; font-size: 15px; font-weight: bold; text-transform: uppercase; cursor: pointer; width: 100%; transition: all 0.3s; border-radius: 4px; text-align: center; }
+        .btn-gold:hover { background-color: #aa8c2c; }
+        
+        .empty-msg { font-size: 16px; color: #777777; text-align: center; padding: 40px 0; }
+    </style>
+</head>
+<body>
+
+    <script>
+        if (localStorage.getItem('isLoggedIn') !== 'true') {
+            alert("Accesso negato! Effettua prima il login.");
+            window.location.href = "registrazioneEcommerce.html";
+        }
+    </script>
+
+    <div class="main-container">
+        <nav class="navbar">
+            <h1>NewSofa</h1>
+            <a href="registrazioneEcommerce.html">Registrazione</a>
+            <a href="loginEcommerce.html">Accedi</a>
+            <a href="vetrinaEcommerce.html">Vetrina</a>
+            <a href="carrelloEcommerce.html" class="active">Carrello <span id="cart-count" class="cart-badge">0</span></a>
+        </nav>
+
+        <div class="content-wrapper">
+            <section class="cart-items-section">
+                <h2>I tuoi Divani Selezionati</h2>
+                <div id="listaCarrello"></div>
+            </section>
+
+            <aside class="checkout-section">
+                <h3>Riepilogo Minerale</h3>
+                <div class="summary-row">
+                    <span>Articoli selezionati:</span>
+                    <span id="totaleArticoli">0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Spedizione Assicurata:</span>
+                    <span style="color: green; font-weight: bold;">Inclusa</span>
+                </div>
+                <div class="summary-total">
+                    <span>Totale:</span>
+                    <span>€<span id="prezzoTotale">0.00</span></span>
+                </div>
+                
+                <button class="btn-gold" id="btnStampaPdf" onclick="generaScontrinoPDF()">Scarica Scontrino PDF</button>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        let carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+
+        function renderizzaCarrello() {
+            document.getElementById('cart-count').innerText = carrello.length;
+            
+            const listaContenitore = document.getElementById('listaCarrello');
+            const totaleArticoli = document.getElementById('totaleArticoli');
+            const prezzoTotale = document.getElementById('prezzoTotale');
+            
+            if (carrello.length === 0) {
+                listaContenitore.innerHTML = `<p class="empty-msg">Il tuo carrello è vuoto. Visita la nostra vetrina per estrarre il tuo prossimo divano!</p>`;
+                totaleArticoli.innerText = "0";
+                prezzoTotale.innerText = "0.00";
+                document.getElementById('btnStampaPdf').disabled = true;
+                document.getElementById('btnStampaPdf').style.opacity = "0.5";
+                return;
+            }
+
+            document.getElementById('btnStampaPdf').disabled = false;
+            document.getElementById('btnStampaPdf').style.opacity = "1";
+            listaContenitore.innerHTML = "";
+            let sommaTotale = 0;
+
+            carrello.forEach((item, index) => {
+                sommaTotale += item.prezzo;
+                
+                const itemHtml = `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <h4>${item.nome}</h4>
+                            <button class="btn-remove" onclick="rimuoviDalCarrello(${index})">Elimina</button>
+                        </div>
+                        <div class="cart-item-price">€${item.prezzo.toFixed(2)}</div>
+                    </div>
+                `;
+                listaContenitore.innerHTML += itemHtml;
+            });
+
+            totaleArticoli.innerText = carrello.length;
+            prezzoTotale.innerText = sommaTotale.toFixed(2);
+        }
+
+        function rimuoviDalCarrello(index) {
+            carrello.splice(index, 1);
+            localStorage.setItem('carrello', JSON.stringify(carrello));
+            renderizzaCarrello();
+        }
+
+        function generaScontrinoPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF({
+                orientation: 'portrait',
+                unit: 'mm',
+                format: [80, 150]
+            });
+
+            const utente = JSON.parse(localStorage.getItem('utenteRegistrato')) || { nome: "Ospite", cognome: "" };
+            const dataCorrente = new Date().toLocaleDateString('it-IT');
+            const oraCorrente = new Date().toLocaleTimeString('it-IT');
+
+            doc.setFont("courier", "normal");
+            doc.setFontSize(10);
+
+            doc.text("==========================", 5, 10);
+            doc.setFont("courier", "bold");
+            doc.text("       NEW SOFA SRL       ", 5, 15);
+            doc.setFont("courier", "normal");
+            doc.text("==========================", 5, 20);
+            
+            doc.text(`Data: ${dataCorrente}  Ora: ${oraCorrente}`, 5, 26);
+            doc.text(`Operatore: ${utente.nome} ${utente.cognome}`, 5, 31);
+            doc.text("--------------------------", 5, 36);
+
+            let yPos = 42;
+            let totaleScontrino = 0;
+
+            carrello.forEach((item) => {
+                let nomeProdotto = item.nome.substring(0, 14);
+                let prezzoProdotto = "EUR " + item.prezzo.toFixed(2);
+                
+                doc.text(nomeProdotto, 5, yPos);
+                doc.text(prezzoProdotto, 45, yPos);
+                
+                totaleScontrino += item.prezzo;
+                yPos += 6;
+            });
+
+            doc.text("--------------------------", 5, yPos);
+            yPos += 6;
+            doc.setFont("courier", "bold");
+            doc.text("TOTALE COMPLESSIVO", 5, yPos);
+            yPos += 5;
+            doc.text(`EUR ${totaleScontrino.toFixed(2)}`, 45, yPos);
+            
+            yPos += 10;
+            doc.setFont("courier", "normal");
+            doc.setFontSize(8);
+            doc.text("Grazie per aver acquistato", 15, yPos);
+            yPos += 4;
+            doc.text("i nostri tessuti d'estrazione.", 12, yPos);
+
+            doc.save(`scontrino_newsofa.pdf`);
+        }
+
+        renderizzaCarrello();
+    </script>
+</body>
+</html>
