@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NewSofa - Login</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+        body { background-color: #f4f1ea; color: #111111; display: flex; min-height: 100vh; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        .main-container { display: flex; width: 100%; animation: fadeIn 0.6s ease-out forwards; }
+        
+        .navbar { width: 250px; background-color: #111111; color: #ffffff; padding: 40px 20px; display: flex; flex-direction: column; gap: 25px; position: fixed; height: 100vh; }
+        .navbar h1 { color: #d4af37; font-size: 24px; letter-spacing: 2px; margin-bottom: 20px; text-transform: uppercase; border-bottom: 2px solid #d4af37; padding-bottom: 10px; }
+        .navbar a { color: #cccccc; text-decoration: none; font-size: 16px; transition: all 0.3s ease; padding: 10px 5px; border-left: 3px solid transparent; }
+        .navbar a:hover, .navbar a.active { color: #d4af37; border-left: 3px solid #d4af37; padding-left: 12px; }
+        .cart-badge { background-color: #d4af37; color: #111111; padding: 2px 8px; border-radius: 20px; font-size: 12px; font-weight: bold; margin-left: 5px; }
+        
+        .content-wrapper { margin-left: 250px; display: flex; flex: 1; width: calc(100% - 250px); }
+        .center-panel { flex: 1.2; padding: 60px 40px; background-color: #ffffff; border-right: 1px solid #e0dacb; }
+        .center-panel h2 { font-size: 28px; margin-bottom: 30px; text-transform: uppercase; letter-spacing: 1px; }
+        
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 14px; }
+        .form-group input { width: 100%; padding: 12px; border: 2px solid #e0dacb; background-color: #faf9f6; border-radius: 4px; font-size: 15px; }
+        .form-group input:focus { outline: none; border-color: #d4af37; }
+        
+        .btn-gold { background-color: #d4af37; color: #111111; border: none; padding: 14px 28px; font-size: 16px; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; width: 100%; transition: all 0.3s; border-radius: 4px; }
+        .btn-gold:hover { background-color: #aa8c2c; transform: translateY(-2px); }
+        .error-msg { color: #b22222; font-size: 14px; margin-top: 15px; display: none; }
+        
+        .right-panel { flex: 0.8; padding: 60px 40px; background-color: #faf9f6; display: flex; flex-direction: column; justify-content: center; }
+        .panel-image { width: 100%; height: 200px; object-fit: cover; border-radius: 4px; margin-bottom: 25px; border: 1px solid #e0dacb; }
+        .right-panel h3 { color: #d4af37; font-size: 22px; margin-bottom: 20px; text-transform: uppercase; }
+        .right-panel p { line-height: 1.7; color: #555555; margin-bottom: 20px; }
+        .feature-list { list-style: none; }
+        .feature-list li { margin-bottom: 12px; position: relative; padding-left: 20px; color: #333333; }
+        .feature-list li::before { content: "•"; color: #d4af37; font-size: 20px; position: absolute; left: 0; top: -2px; }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <nav class="navbar">
+            <h1>NewSofa</h1>
+            <a href="registrazioneEcommerce.html">Registrazione</a>
+            <a href="loginEcommerce.html" class="active">Accedi</a>
+            <a href="vetrinaEcommerce.html">Vetrina</a>
+            <a href="carrelloEcommerce.html">Carrello <span id="cart-count" class="cart-badge">0</span></a>
+        </nav>
+
+        <div class="content-wrapper">
+            <main class="center-panel">
+                <h2>Accedi alla Cava</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" placeholder="Inserisci la tua email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Password</label>
+                        <input type="password" id="loginPassword" placeholder="Inserisci la tua password" required>
+                    </div>
+                    <button type="submit" class="btn-gold">Entra</button>
+                    <div id="errorBox" class="error-msg"></div>
+                </form>
+            </main>
+
+            <aside class="right-panel">
+                <img src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?w=600&auto=format&fit=crop&q=60" alt="NewSofa Luxury Detail" class="panel-image">
+                <h3>Benvenuto Esploratore</h3>
+                <p>Esegui il login per accedere alla collezione esclusiva basata sull'eleganza geometrica dei minerali terrestri e filati mineralizzati.</p>
+                <p>I tuoi benefici immediati come utente loggato:</p>
+                <ul class="feature-list">
+                    <li>Visualizzazione immediata dei prezzi riservati.</li>
+                    <li>Opzione di spedizione tracciata e assicurata gratuita.</li>
+                    <li>Configuratore di dimensioni in tempo reale in vetrina.</li>
+                </ul>
+            </aside>
+        </div>
+    </div>
+
+    <script>
+        function aggiornaContatoreCarrello() {
+            const carrello = JSON.parse(localStorage.getItem('carrello')) || [];
+            document.getElementById('cart-count').innerText = carrello.length;
+        }
+        aggiornaContatoreCarrello();
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            const errorBox = document.getElementById('errorBox');
+
+            const utenteSalvato = localStorage.getItem('utenteRegistrato');
+
+            if (!utenteSalvato) {
+                errorBox.innerText = "Nessun utente registrato sul sistema. Per favore registrati.";
+                errorBox.style.display = "block";
+                return;
+            }
+
+            const utenteOggetto = JSON.parse(utenteSalvato);
+
+            if (email === utenteOggetto.email && password === utenteOggetto.password) {
+                localStorage.setItem('isLoggedIn', 'true');
+                errorBox.style.display = "none";
+                alert(`Benvenuto di nuovo, ${utenteOggetto.nome}!`);
+                window.location.href = "vetrinaEcommerce.html";
+            } else {
+                errorBox.innerText = "Credenziali non valide. Riprova.";
+                errorBox.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>
