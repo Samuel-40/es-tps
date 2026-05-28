@@ -79,56 +79,64 @@
         }
         aggiornaContatoreCarrello();
 
-        async function caricaProdottiCSV() {
-            try {
-                const response = await fetch('prodotti.csv');
-                if(!response.ok) {
-                    throw new Error("Impossibile caricare il file prodotti.csv.");
+        function caricaProdottiArray() {
+            const prodotti = [
+                {
+                    nome: "Divano Pyrite",
+                    marca: "NewSofa",
+                    descrizione: "Design geometrico con inserti dorati cangianti.",
+                    immagine: "https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500",
+                    prezzo: 1200,
+                    dimensioni: "220x95x80 cm",
+                    taglia: "3 Posti",
+                    spedizione: "Gratuita"
+                },
+                {
+                    nome: "Sofà Quartz",
+                    marca: "NewSofa",
+                    descrizione: "Tessuto grezzo estratto ad alta resistenza color argilla.",
+                    immagine: "https://images.unsplash.com/photo-1493663284031-b7e3aefcae8e?w=500",
+                    prezzo: 850,
+                    dimensioni: "180x90x75 cm",
+                    taglia: "2 Posti",
+                    spedizione: "29.00€"
+                },
+                {
+                    nome: "Angolare Clay",
+                    marca: "NewSofa",
+                    descrizione: "Struttura imponente nei toni caldi della terra cotta.",
+                    immagine: "https://images.unsplash.com/photo-1540518614846-7eded433c457?w=500",
+                    prezzo: 2100,
+                    dimensioni: "300x200x85 cm",
+                    taglia: "Chise Longue",
+                    spedizione: "Gratuita"
                 }
-                const dataText = await response.text();
-                const righe = dataText.split('\n');
-                const griglia = document.getElementById('grigliaProdotti');
-                
-                for(let i = 1; i < righe.length; i++) {
-                    if(righe[i].trim() === "") continue;
-                    
-                    const colonne = righe[i].split(',');
-                    const prodotto = {
-                        nome: colonne[0],
-                        marca: colonne[1],
-                        descrizione: colonne[2],
-                        immagine: colonne[3],
-                        prezzo: colonne[4],
-                        dimensioni: colonne[5],
-                        taglia: colonne[6],
-                        spedizione: colonne[7]
-                    };
+            ];
 
-                    const cardHtml = `
-                        <div class="product-card">
-                            <img src="${prodotto.immagine}" alt="${prodotto.nome}" class="product-img" onerror="this.src='https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=500'">
-                            <div class="product-info">
-                                <span class="product-brand">${prodotto.marca}</span>
-                                <h3 class="product-title">${prodotto.nome}</h3>
-                                <p class="product-desc">${prodotto.descrizione}</p>
-                                
-                                <div class="product-specs">
-                                    <div><strong>Dimens.:</strong> ${prodotto.dimensioni}</div>
-                                    <div><strong>Taglia:</strong> ${prodotto.taglia}</div>
-                                    <div><strong>Spedizione:</strong> ${prodotto.spedizione}</div>
-                                </div>
-                                
-                                <div class="product-price">€${prodotto.prezzo}</div>
-                                <button class="btn-gold" onclick="aggiungiAlCarrello('${prodotto.nome.replace(/'/g, "\\'")}', ${prodotto.prezzo})">Aggiungi al Carrello</button>
+            const griglia = document.getElementById('grigliaProdotti');
+            
+            prodotti.forEach(prodotto => {
+                const cardHtml = `
+                    <div class="product-card">
+                        <img src="${prodotto.immagine}" alt="${prodotto.nome}" class="product-img">
+                        <div class="product-info">
+                            <span class="product-brand">${prodotto.marca}</span>
+                            <h3 class="product-title">${prodotto.nome}</h3>
+                            <p class="product-desc">${prodotto.descrizione}</p>
+                            
+                            <div class="product-specs">
+                                <div><strong>Dimens.:</strong> ${prodotto.dimensioni}</div>
+                                <div><strong>Taglia:</strong> ${prodotto.taglia}</div>
+                                <div><strong>Spedizione:</strong> ${prodotto.spedizione}</div>
                             </div>
+                            
+                            <div class="product-price">€${prodotto.prezzo}</div>
+                            <button class="btn-gold" onclick="aggiungiAlCarrello('${prodotto.nome.replace(/'/g, "\\'")}', ${prodotto.prezzo})">Aggiungi al Carrello</button>
                         </div>
-                    `;
-                    griglia.innerHTML += cardHtml;
-                }
-            } catch (error) {
-                console.error(error);
-                document.getElementById('grigliaProdotti').innerHTML = `<p style="color:red; grid-column: 1/-1;">Errore di caricamento: ${error.message}</p>`;
-            }
+                    </div>
+                `;
+                griglia.innerHTML += cardHtml;
+            });
         }
 
         function aggiungiAlCarrello(nome, prezzo) {
@@ -144,6 +152,10 @@
             window.location.href = "loginEcommerce.html";
         }
 
+        caricaProdottiArray();
+    </script>
+</body>
+</html>
         caricaProdottiCSV();
     </script>
 </body>
